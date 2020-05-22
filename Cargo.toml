@@ -1,5 +1,5 @@
 [package]
-name = "ESerm"
+name = "eserm"
 version = "0.1.0"
 authors = ["Josias <justjosias@tutanota.com>"]
 edition = "2018"
@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 clap = "3.0.0-beta.1"
+chrono = "0.4"
+dirs = "2.0"
