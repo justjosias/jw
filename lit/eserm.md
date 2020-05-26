@@ -131,7 +131,6 @@ mod tests {
 This is the basic CLI we need for putting input for the rest of the program.
 
 ``` {.rust file=src/main.rs}
-
 <<cli-includes>>
 <<cli-config>>
 <<main-function>>
@@ -140,7 +139,6 @@ This is the basic CLI we need for putting input for the rest of the program.
 First we include the [clap](https://github.com/clap-rs/clap) crate for managing the CLI arguments.
 
 ``` {.rust #cli-includes}
-
 use clap::Clap;
 use std::io;
 use std::io::prelude::*;
@@ -149,14 +147,12 @@ use std::io::prelude::*;
 Other things we need in the program:
 
 ``` {.rust #cli-includes}
-
 mod lib;
 ```
 
 Now for the actual CLI configuration:
 
 ``` {.rust #cli-config}
-
 #[derive(Clap)]
 #[clap(version = "0.1", author = "Josias <justjosias@tutanota.com>")]
 struct Opts {
@@ -173,7 +169,6 @@ enum SubCommand{
 The `Post` structure contains information for the `post` subcommand. `text` is an optional string that contains the CLI input of the user. For example, when `post test` is given, `post.text` will be `Some(text)`.
 
 ``` {.rust #cli-config}
-
 #[derive(Clap)]
 struct Post {
     #[clap(about = "Title for the text to be posted (can be empty to use the first words of cog)")]
@@ -184,7 +179,6 @@ struct Post {
 Now we have the main function, which manages the arguments and passes them along to the various parts of the library.
 
 ``` {.rust #main-function}
-
 // Reads user input line by line until the line equals the escape string
 fn line_by_line(escape: &str) -> Result<String, std::io::Error> {
     println!("Write here. When you're done, type {} and press return.\n", escape);
