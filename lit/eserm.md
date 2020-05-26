@@ -150,7 +150,8 @@ This is the basic CLI we need for putting input for the rest of the program.
 ``` {.rust file=src/main.rs}
 <<cli-includes>>
 <<cli-config>>
-<<main-function>>
+<<cli-input>>
+<<cli-main>>
 ```
 
 First we include the [clap](https://github.com/clap-rs/clap) crate for managing the CLI arguments.
@@ -193,15 +194,14 @@ struct Post {
 }
 ```
 
-Now we have the main function, which manages the arguments and passes them along to the various parts of the library.
+The following function reads input line by line from the user until they type a certain string specifed by the `escape` argument. Then it returns the input collected.
 
-``` {.rust #main-function}
+``` {.rust #cli-input}
 // Reads user input line by line until the line equals the escape string
 fn line_by_line(escape: &str) -> Result<String, std::io::Error> {
     println!("Write here. When you're done, type {} and press return.\n", escape);
 
     let mut input: Vec<String> = Vec::new();
-    //let mut input = String::new();
 
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
@@ -216,15 +216,11 @@ fn line_by_line(escape: &str) -> Result<String, std::io::Error> {
 
     Ok(input.join("\n"))
 }
+```
 
-/*
-#[test]
-fn test_line_by_line() {
-    let lines = line_by_line("DONE").unwrap();
-    println!("{}", lines);
-    assert_eq!(lines, "hi");
-}*/
+Now we have the main function, which manages the arguments and passes them along to the various parts of the library.
 
+``` {.rust #cli-main}
 fn main() {
     let opts: Opts = Opts::parse();
 
