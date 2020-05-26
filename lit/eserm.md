@@ -5,9 +5,9 @@ author: Josias Allestad
 
 The program is divided into several sections:
 - Library (the backend that does pretty much everything)
-  - Reading
-  - Writing
-  - Searching
+  - [ ] Reading
+  - [/] Writing
+  - [ ] Searching
 - CLI
 
 ## Library
@@ -15,14 +15,46 @@ The program is divided into several sections:
 The library does the actual heavy-lifting, and allows its use in other programs (maybe web someday?).
 
 ``` {.rust file=src/lib.rs}
-use chrono::{DateTime, Utc};
-use dirs;
-use std::fs;
-use std::path::PathBuf;
+<<lib-includes>>
+<<lib-config>>
 
-/// DIRNAME contains the name of the cogs directory relative to the user's home directory
-pub const DIRNAME: &str = "cogs";
+<<lib-dirs>>
 
+pub fn write_file(text: &str, title: Option<&str>) -> Result<(), std::io::Error> {
+    // If the title is None, use the first three words of the text as a title
+    let title: String = match title {
+        Some(title) => title.to_string().split_whitespace().collect::<Vec<&str>>().join("-"),
+        None => {
+            let text = text.split_whitespace().collect::<Vec<&str>>();
+            if text.len() > 3 {
+                text[0..2].join("-")
+            } else if text.len() > 0 {
+                text[0].to_string()
+            } else {
+                return Ok(());
+            }
+        },
+    };
+    let path = get_full_dir();
+
+    fs::create_dir_all(path)?;
+    let mut filepath = get_full_path(&get_path(&title));
+
+    //if filepath.exists() {
+    //    filepath.push("(2)");
+    //}
+
+    fs::write(filepath, text)?;
+
+    Ok(())
+}
+
+<<lib-tests>>
+```
+
+This code makes it easy to determine where a new cog should go. It basically looks like this: `/home/USER/cogs/YYYY-MM/DD-TITLE.md`. Example: `/home/josias/cogs/2020-01/01-hi.md`.
+
+``` {.rust #lib-dirs}
 /// get_path returns the path of a new cog in the form of 2020-01/01-[text].md
 pub fn get_path(title: &str) -> String {
     let now: DateTime<Utc> = Utc::now();
@@ -58,37 +90,6 @@ pub fn get_dir() -> PathBuf {
 
     path
 }
-
-pub fn write_file(text: &str, title: Option<&str>) -> Result<(), std::io::Error> {
-    // If the title is None, use the first three words of the text as a title
-    let title: String = match title {
-        Some(title) => title.to_string().split_whitespace().collect::<Vec<&str>>().join("-"),
-        None => {
-            let text = text.split_whitespace().collect::<Vec<&str>>();
-            if text.len() > 3 {
-                text[0..2].join("-")
-            } else if text.len() > 0 {
-                text[0].to_string()
-            } else {
-                return Ok(());
-            }
-        },
-    };
-    let path = get_full_dir();
-
-    fs::create_dir_all(path)?;
-    let mut filepath = get_full_path(&get_path(&title));
-
-    //if filepath.exists() {
-    //    filepath.push("(2)");
-    //}
-
-    fs::write(filepath, text)?;
-
-    Ok(())
-}
-
-<<lib-tests>>
 ```
 
 Now the tests:
@@ -124,6 +125,22 @@ mod tests {
         write_file(" ", Some("hi")).unwrap();
     }
 }
+```
+
+Now the boring includes:
+
+``` {.rust #lib-includes}
+use chrono::{DateTime, Utc};
+use dirs;
+use std::fs;
+use std::path::PathBuf;
+```
+
+Here's the configuration (it will eventually be moved to another file in `.config` or something):
+
+``` {.rust #lib-config}
+/// DIRNAME contains the name of the cogs directory relative to the user's home directory
+pub const DIRNAME: &str = "cogs";
 ```
 
 ## CLI
