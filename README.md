@@ -1,6 +1,6 @@
 # ESerm
 
-Digital sticky notes on steroids. Written in Rust as a learning experiment.
+A micro-journaling tool written in Rust as a learning experiment.
 
 Many journaling programs are better-designed for writing long entries. Of course, they do not force you to do so, but they certainly make it preferable to do it that way.
 
@@ -20,6 +20,8 @@ todo:
 - Yaml metadata at top
 - Handle bad text in filenames (strip more than whitespace in write_file)
 - Rewrite when I know what I'm doing
+
+As this is a general way to let out thoughts and organize them, I think it would be useful to expand this from micro-journaling to noting general thoughts. Maybe other modes for notes and such. And as it uses Markdown, it can be very flexible.
 
 ## Word meanings
 
