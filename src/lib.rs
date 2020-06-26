@@ -1,9 +1,57 @@
 use chrono::{DateTime, Utc};
 use dirs;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
+
+mod utils;
 
 pub const DIRNAME: &str = "cogs";
+
+pub struct Cog<'a> {
+    date: DateTime<Utc>,
+    title: Option<&'a str>,
+    categories: Option<Vec<&'a str>>,
+    text: &'a str,
+}
+
+impl Cog<'static> {
+    pub fn filename(self: &Self) -> String {
+	// Gets the title but formatted with dashes and strips invalid characters
+	// so "Hello world" becomes "hello-world"
+	// TODO: find a better way to deal with two-or-less-word cogs
+	let illegal_chars = "?!%\"\',.\\/*[]:;|";
+	let to_replace = " ";
+	let file_title = if let Some(title) = self.title {
+            utils::strip_chars(title, illegal_chars)
+		.to_lowercase()
+		.split_whitespace()
+		.collect::<Vec<&str>>()
+		.join("-")
+	} else {
+            let text = self.text.split_whitespace().collect::<Vec<&str>>();
+            if text.len() >= 3 {
+		text[0..3].join("-")
+            } else if text.len() >= 1 {
+		text[0].to_string() //.split(" ").collect::<Vec<&str>>().join("-")
+            } else {
+		"".to_string()
+            }
+	};
+
+	file_title
+    }
+}
+
+#[test]
+fn test_filename() {
+    let mut test_cog: Cog = Cog {
+        date: Utc::now(),
+	categories: Some(vec!["tech", "notes"]),
+        title: Some("a post Title"),
+        text: "Hey there. How are you doing?",
+    };
+    assert_eq!(test_cog.filename(), "a-post-title");
+}
 
 pub fn get_path(title: &str) -> String {
     let now: DateTime<Utc> = Utc::now();
@@ -49,8 +97,8 @@ pub fn write_file(text: &str, title: Option<&str>) -> Result<(), std::io::Error>
             .join("-")
     } else {
         let text = text.split_whitespace().collect::<Vec<&str>>();
-        if text.len() > 3 {
-            text[0..2].join("-")
+        if text.len() >= 3 {
+            text[0..3].join("-")
         } else if text.len() > 0 {
             text[0].to_string()
         } else {
@@ -64,7 +112,7 @@ pub fn write_file(text: &str, title: Option<&str>) -> Result<(), std::io::Error>
     let filepath = get_full_path(&get_path(&file_title));
 
     // if filepath.exists() {
-    //     filepath.push("(2)");
+    //    filepath.push("(2)");
     // }
 
     // Get some metadata
