@@ -10,7 +10,7 @@ void print_help()
 	fprintf(stderr, "Usage: eserm [OPTIONS] SUBCOMMAND TEXT\n");
 	fprintf(stderr, "A simple micro-journaling tool\n\n");
 	fprintf(stderr, "  help       display help text\n");
-	fprintf(stderr, "  puto       make a post (with optional title)\n");
+	fprintf(stderr, "  post       make a post (with optional title)\n");
 }
 
 void print_version_info()
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	if (strcmp(argv[1], "puto") == 0) {
+	if (strcmp(argv[1], "post") == 0) {
 		char *text = (char *)malloc(1000);
 		int len = 1000;
 

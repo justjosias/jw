@@ -27,9 +27,9 @@ I chose specific meanings for different words used throughout this program.
 
 First of all, the name. ESerm is short for Ego Sermo, which is a combination of the Latin words for "self" and "conversation."
 
-Next, we don't have tweets, toots, or even posts. Here thoughts you save are called "cogs", which is short for "cogitatio", "cogitamentum", or "cogitatus" (take your pick). "To post" is "puto".
+Next, we don't have tweets, toots, or even posts. Here thoughts you save are called "cogs", which is short for "cogitatio", "cogitamentum", or "cogitatus" (take your pick). It can also refer to "cogs" turning in your mind.
 
-Yes, I used random Latin words that only sort of refer to what I want them to be. It is a personal project, and if you don't like my naming, change the words yourself.
+Everything else is in plain old English.
 
 ## Installation
 
