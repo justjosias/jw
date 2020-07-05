@@ -24,7 +24,8 @@ char *get_text(char *text, int len, char *exit)
 {
 	int available = len;
 
-	char line[500]; // TODO increase flexibility
+	// TODO increase flexibility by possibly reading char by char
+	char line[500];
 	while ((fgets(line, 500, stdin))) {
 		if (strncmp(line, exit, strlen(exit)) == 0) {
 			break;
@@ -52,8 +53,8 @@ int main(int argc, char **argv)
 		char *text = (char *)malloc(1000);
 		int len = 1000;
 
-		printf("Write here. When you are done, type \"DONE\" and enter.\n");
-		printf("-----------------------------------------------------\n");
+		fprintf(stderr, "Write here. When you are done, type \"DONE\" and enter.\n");
+		fprintf(stderr, "-----------------------------------------------------\n");
 
 		if (argc == 3)
 			write(get_text(text, len, "DONE"), argv[2]);
