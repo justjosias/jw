@@ -16,10 +16,8 @@ Future features:
 - Categories and hashtags
 - Encryption
 
-todo:
-- Yaml metadata at top
-- Handle bad text in filenames (strip more than whitespace in write_file)
-- Rewrite when I know what I'm doing
+TODO:
+- Use system text editor instead of `get_text`
 
 As this is a general way to let out thoughts and organize them, I think it would be useful to expand this from micro-journaling to noting general thoughts. Maybe other modes for notes and such. And as it uses Markdown, it can be very flexible.
 
