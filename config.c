@@ -10,7 +10,7 @@ char *config_cog_dir_get()
 	static char path[50]; // TODO don't use arbitrary number
 	strncpy(path, home, 49); // TODO is this really how it works? (49)
 	strncat(path, CONFIG_COG_DIR, 49);
-	path[40] = '\0'; // Is this right?
+	path[49] = '\0'; // Is this right?
 
 	return path;
 }
