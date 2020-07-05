@@ -96,7 +96,11 @@ int write(char *text, char *title)
 		first_text[FIRST_TEXT_LEN - 1] = '\0';
 	}
 
-	snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", get_full_date().day, first_text);
+	if (strncmp(title, "", 1) == 0) {
+		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", get_full_date().day, first_text);
+	} else {
+		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", get_full_date().day, title);
+	}
 
 	const size_t full_size = sizeof(full_dir) + sizeof(filename);
 	char full_path[full_size];
@@ -116,12 +120,12 @@ int write(char *text, char *title)
 	ensure_dir(full_dir);
 
 	// prepare pre-text
-	char metadata[50];
-	strncpy(metadata, "---\n", 49);
+	char metadata[100];
+	strncpy(metadata, "---\n", 99);
 	if (strncmp(title, "", 1) != 0) {
-		strncat(metadata, "title: ", 49);
-		strncat(metadata, title, 49);
-		strncat(metadata, "\n", 49);
+		strncat(metadata, "title: ", 99);
+		strncat(metadata, title, 99);
+		strncat(metadata, "\n", 99);
 	}
 
 	time_t t = time(NULL);
@@ -131,11 +135,11 @@ int write(char *text, char *title)
 			tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday + 1,
 			tm.tm_hour + 1, tm.tm_min + 1, tm.tm_sec + 1 // TODO verify +1 here
 			);
-	strncat(metadata, "date: ", 49);
-	strncat(metadata, date_str, 49);
+	strncat(metadata, "date: ", 99);
+	strncat(metadata, date_str, 99);
 
-	strncat(metadata, "\n---\n", 49);
-	metadata[49] = '\0'; // I don't know if this is necessary or not
+	strncat(metadata, "\n---\n", 99);
+	metadata[99] = '\0'; // I don't know if this is necessary or not
 
 	// write to file
 	FILE *file = fopen(full_path, "a+");
