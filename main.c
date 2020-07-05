@@ -7,17 +7,29 @@
 
 void print_help()
 {
-	printf("ESerm version %s\n\n", VERSION);
-	printf("  help            display help text\n");
-	printf("  puto [TITLE]    make a post (with optional title)\n");
+	fprintf(stderr, "Usage: eserm [OPTIONS] SUBCOMMAND TEXT\n");
+	fprintf(stderr, "A simple micro-journaling tool\n\n");
+	fprintf(stderr, "  help       display help text\n");
+	fprintf(stderr, "  puto       make a post (with optional title)\n");
 }
 
-char *get_text(char *text, int len)
+void print_version_info()
+{
+	fprintf(stderr, "eserm %s\n", VERSION);
+	fprintf(stderr, "Copyright (C) Josias Allestad\n");
+	fprintf(stderr, "You may use this software under the terms of the BSD-2-Clause license\n");
+}
+
+char *get_text(char *text, int len, char *exit)
 {
 	int available = len;
 
 	char line[500]; // TODO increase flexibility
 	while ((fgets(line, 500, stdin))) {
+		if (strncmp(line, exit, strlen(exit)) == 0) {
+			break;
+		}
+
 		if (strlen(line) > available) {
 			text = realloc(text, len + 500);
 		}
@@ -32,7 +44,7 @@ char *get_text(char *text, int len)
 int main(int argc, char **argv)
 {
 	if (argc == 1) {
-		fprintf(stderr, "Usage: eserm ARGS\n");
+		fprintf(stderr, "Usage: eserm SUBCOMMAND\n");
 		return EXIT_FAILURE;
 	}
 
@@ -40,12 +52,18 @@ int main(int argc, char **argv)
 		char *text = (char *)malloc(1000);
 		int len = 1000;
 
+		printf("Write here. When you are done, type \"DONE\" and enter.\n");
+		printf("-----------------------------------------------------\n");
+
 		if (argc == 3)
-			write(get_text(text, len), argv[2]);
+			write(get_text(text, len, "DONE"), argv[2]);
 		else
-			write(get_text(text, len), "");
+			write(get_text(text, len, "DONE"), "");
+
 	} else if (strcmp(argv[1], "help") == 0) {
 		print_help();
+	} else if (strcmp(argv[1], "version") == 0) {
+		print_version_info();
 	} else {
 		fprintf(stderr, "Unknown option: %s\n", argv[1]);
 	}
