@@ -23,8 +23,6 @@ int write(char *text, char *title)
 	struct tm tm = *gmtime(&t);
 	struct date date = utils_full_date(tm);
 
-	char *home = getenv("HOME");
-
 	char full_dir[100];
 	snprintf(full_dir, 100, "%s/%s", config_cog_dir_get(), get_dir(date));
 
