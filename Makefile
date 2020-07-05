@@ -1,4 +1,4 @@
 all: build
 
 build:
-	gcc -o eserm *.c
+	$(CC) -o eserm *.c
