@@ -1,6 +1,6 @@
 # ESerm
 
-A micro-journaling tool written in Rust as a learning experiment.
+A micro-journaling tool written in C.
 
 Many journaling programs are better-designed for writing long entries. Of course, they do not force you to do so, but they certainly make it preferable to do it that way.
 
@@ -37,6 +37,6 @@ Yes, I used random Latin words that only sort of refer to what I want them to be
 
 ```
 $ git clone https://codeberg.org/josias/ESerm && cd ESerm
-$ cargo install --path .
-$ eserm help 
+$ make
+$ ./eserm help
 ```
