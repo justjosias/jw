@@ -6,4 +6,10 @@
 // (if another title is not provided)
 #define FIRST_TEXT_LEN 20
 
+// the cog directory relative to home
+#define CONFIG_COG_DIR "/cogs"
+
+
+char *config_cog_dir_get(void);
+
 #endif

@@ -26,7 +26,7 @@ int write(char *text, char *title)
 	char *home = getenv("HOME");
 
 	char full_dir[100];
-	snprintf(full_dir, 100, "%s/%s/%s", home, "cogs", get_dir(date));
+	snprintf(full_dir, 100, "%s/%s", config_cog_dir_get(), get_dir(date));
 
 	// form of 01-hello.md, where the text is no greater than FIRST_TEXT_LEN
 	char filename[6 + FIRST_TEXT_LEN + 1];
@@ -82,13 +82,10 @@ int write(char *text, char *title)
 	strncat(full_path, filename, full_size);
 
 	// ensure the directories exist
-	char cog_dir[40];
-	strncpy(cog_dir, home, 40);
-	strcat(cog_dir, "/cogs");
-	utils_ensure_dir(cog_dir);
+	utils_ensure_dir(config_cog_dir_get());
 
 	char year_path[44];
-	snprintf(year_path, 44, "%s/%d", cog_dir, date.year);
+	snprintf(year_path, 44, "%s/%d", config_cog_dir_get(), date.year);
 	utils_ensure_dir(year_path);
 
 	utils_ensure_dir(full_dir);
@@ -109,7 +106,7 @@ int write(char *text, char *title)
 	strncat(metadata, date_str, 99);
 
 	strncat(metadata, "\n---\n", 99);
-	metadata[99] = '\0'; // I don't know if this is necessary or not
+	metadata[99] = '\0'; // I don't know if this is necessary or not TODO
 
 	// write to file
 	FILE *file = fopen(full_path, "a+");

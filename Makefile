@@ -4,12 +4,11 @@ INSTALL ?= install
 
 CFLAGS=-Wall
 
-CFILES=main.c write.c utils.c
+CFILES=main.c write.c utils.c config.c
 OFILES=$(CFILES:.c=.o)
 all: build
 
 build: $(OFILES)
-	$(CC) -o $(NAME) *.c
 	$(CC) $(LDFLAGS) -o $(NAME) $(OFILES) $(LIBS)
 
 .c.o:
