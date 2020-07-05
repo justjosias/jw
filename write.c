@@ -61,7 +61,7 @@ int write(char *text, char *title)
 	strncpy(tmp_first, text, FIRST_TEXT_LEN);
 
 	// modify first_text to remove non-letters and non-characters
-	char first_text[FIRST_TEXT_LEN];
+	char first_text[FIRST_TEXT_LEN + 1];
 	size_t i = 0;
 	size_t n = 0; // index of first_text (may or may not increase per loop)
 	while (i < FIRST_TEXT_LEN) {
@@ -91,7 +91,9 @@ int write(char *text, char *title)
 	}
 
 	if (first_text[strlen(first_text) - 1] == '-') {
-		first_text[strlen(first_text) - 1] = '\0';
+		first_text[strlen(first_text) - 2] = '\0';
+	} else {
+		first_text[FIRST_TEXT_LEN - 1] = '\0';
 	}
 
 	snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", get_full_date().day, first_text);
