@@ -3,56 +3,30 @@
 #include <ctype.h> // for isalpha and isdigit
 #include <stdlib.h> // for getenv
 #include <string.h> // for strcpy
-#include <sys/stat.h> // for stat
 #include <time.h> // for time and gmtime
 
 #include "write.h"
 #include "config.h"
-
-struct date {
-	int year;
-	int month;
-	int day;
-};
-
-struct date get_full_date()
-{
-	time_t t = time(NULL);
-	struct tm tm = *gmtime(&t);
-
-	struct date date = {
-		tm.tm_year + 1900,
-		tm.tm_mon + 1,
-		tm.tm_mday + 1,
-	};
-
-	return date;
-}
+#include "utils.h"
 
 // Form: `2020/01/`, so it is always 8 characters
-char *get_dir()
+char *get_dir(struct date date)
 {
-	struct date date = get_full_date();
-
 	static char str_time[9];
-	snprintf(str_time, 9, "%d/%02d/", date.year, date.month);
+	snprintf(str_time, 9, "%d/%02d/", date.year, date.mon);
 	return str_time;
-}
-
-void ensure_dir(char *path)
-{
-	struct stat st = {0};
-	if (stat(path, &st) == -1) {
-		mkdir(path, 0700);
-	}
 }
 
 int write(char *text, char *title)
 {
+	time_t t = time(NULL);
+	struct tm tm = *gmtime(&t);
+	struct date date = utils_full_date(tm);
+
 	char *home = getenv("HOME");
 
 	char full_dir[100];
-	snprintf(full_dir, 100, "%s/%s/%s", home, "cogs", get_dir());
+	snprintf(full_dir, 100, "%s/%s/%s", home, "cogs", get_dir(date));
 
 	// form of 01-hello.md, where the text is no greater than FIRST_TEXT_LEN
 	char filename[6 + FIRST_TEXT_LEN + 1];
@@ -97,9 +71,9 @@ int write(char *text, char *title)
 	}
 
 	if (strncmp(title, "", 1) == 0) {
-		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", get_full_date().day, first_text);
+		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", date.mday, first_text);
 	} else {
-		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", get_full_date().day, title);
+		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", date.mday, title);
 	}
 
 	const size_t full_size = sizeof(full_dir) + sizeof(filename);
@@ -111,13 +85,13 @@ int write(char *text, char *title)
 	char cog_dir[40];
 	strncpy(cog_dir, home, 40);
 	strcat(cog_dir, "/cogs");
-	ensure_dir(cog_dir);
+	utils_ensure_dir(cog_dir);
 
 	char year_path[44];
-	snprintf(year_path, 44, "%s/%d", cog_dir, get_full_date().year);
-	ensure_dir(year_path);
+	snprintf(year_path, 44, "%s/%d", cog_dir, date.year);
+	utils_ensure_dir(year_path);
 
-	ensure_dir(full_dir);
+	utils_ensure_dir(full_dir);
 
 	// prepare pre-text
 	char metadata[100];
@@ -128,13 +102,9 @@ int write(char *text, char *title)
 		strncat(metadata, "\n", 99);
 	}
 
-	time_t t = time(NULL);
-	struct tm tm = *gmtime(&t);
-	char date_str[26]; // For example: 2020-05-23T16:01:58+03:00
-	snprintf(date_str, 26, "%d-%02d-%02dT%02d:%02d:%02d+00:00", // TODO support other time zones
-			tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday + 1,
-			tm.tm_hour + 1, tm.tm_min + 1, tm.tm_sec + 1 // TODO verify +1 here
-			);
+	char *date_str;
+	date_str = utils_timestamp(date);
+
 	strncat(metadata, "date: ", 99);
 	strncat(metadata, date_str, 99);
 
@@ -154,7 +124,7 @@ int write(char *text, char *title)
 
 	fclose(file);
 
-	printf("Saved to %s\n", full_path);
+	fprintf(stderr, "Saved to %s\n", full_path);
 
 	return strlen(text);
 }
