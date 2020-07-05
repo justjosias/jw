@@ -42,4 +42,5 @@ $ ./eserm help
 ## License
 
 Copyright (C) 2020, Josias Allestad
+
 You may use this software under the terms of the [BSD-2-Clause license](LICENSE).
