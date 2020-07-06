@@ -37,15 +37,13 @@ int write(char *text, char *title)
 	size_t i = 0;
 	size_t n = 0; // index of first_text (may or may not increase per loop)
 	while (i < FIRST_TEXT_LEN) {
-		if (!isalpha(tmp_first[i]) && !isdigit(tmp_first[i]) && tmp_first[i] != '\0'
-		) {
+		if (!isalpha(tmp_first[i]) && !isdigit(tmp_first[i]) && tmp_first[i] != '\0') {
 			if (i == 0) {
 				i++;
 				continue;
 			}
 
-			if (first_text[n - 1] != '-' && tmp_first[i] != '\n'
-			) {
+			if (first_text[n - 1] != '-' && tmp_first[i] != '\n') {
 				first_text[n] = '-';
 			} else {
 				i++;
