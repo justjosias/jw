@@ -8,7 +8,8 @@
 
 // the cog directory relative to home
 #define CONFIG_COG_DIR "/cogs"
-
+// cog list relative to cog dir
+#define CACHE_LIST_PATH "/cogs.txt"
 
 char *config_cog_dir_get(void);
 
