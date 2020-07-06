@@ -61,6 +61,8 @@ int main(int argc, char **argv)
 		else
 			write(get_text(text, len, "DONE"), "");
 
+		free(text);
+
 	} else if (strcmp(argv[1], "help") == 0) {
 		print_help();
 	} else if (strcmp(argv[1], "version") == 0) {
