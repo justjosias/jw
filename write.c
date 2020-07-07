@@ -57,7 +57,7 @@ int write(char *text, char *title)
 		i++;
 	}
 
-	if (first_text[strlen(first_text) - 1] == '-') {
+	if (first_text[strlen(first_text) - 2] == '-') {
 		first_text[strlen(first_text) - 2] = '\0';
 	} else {
 		first_text[FIRST_TEXT_LEN - 1] = '\0';
