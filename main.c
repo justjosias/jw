@@ -9,8 +9,11 @@ void print_help()
 {
 	fprintf(stderr, "Usage: eserm [OPTIONS] SUBCOMMAND TEXT\n");
 	fprintf(stderr, "A simple micro-journaling tool\n\n");
-	fprintf(stderr, "  help       display help text\n");
-	fprintf(stderr, "  post       make a post (with optional title)\n");
+	fprintf(stderr, "  help         display this help text\n");
+	fprintf(stderr, "  version      display version information\n");
+	fprintf(stderr, "  license      display license information\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "  post [TITLE] make a post (with optional title)\n");
 }
 
 void print_version_info()
@@ -42,6 +45,15 @@ char *get_text(char *text, int len, char *exit)
 	return text;
 }
 
+void print_license()
+{
+	FILE *file = fopen("LICENSE", "r");
+	int c;
+	while ((c = getc(file)) != EOF) {
+		putc(c, stdout);
+	}
+}
+
 int main(int argc, char **argv)
 {
 	if (argc == 1) {
@@ -67,6 +79,8 @@ int main(int argc, char **argv)
 		print_help();
 	} else if (strcmp(argv[1], "version") == 0) {
 		print_version_info();
+	} else if (strcmp(argv[1], "license") == 0) {
+		print_license();
 	} else {
 		fprintf(stderr, "Unknown option: %s\n", argv[1]);
 	}
