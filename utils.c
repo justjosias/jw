@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: BSD-2-Clause
 // General standalone utilities not directly related to eserm's main functions.
 #include <stdio.h>
 #include <sys/stat.h>

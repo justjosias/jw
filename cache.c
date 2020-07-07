@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: BSD-2-Clause
 // manages the cache file that lists all of the cogs in linear form
 #include <stdio.h>
 #include <stdbool.h>

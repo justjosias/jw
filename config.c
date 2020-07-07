@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: BSD-2-Clause
 #include <stdio.h> // for snprintf
 #include <stdlib.h> // for getenv
 #include <string.h> // for strncat and strncpy
@@ -14,5 +15,3 @@ char *config_cog_dir_get()
 
 	return path;
 }
-
-
