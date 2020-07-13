@@ -1,18 +1,45 @@
 // SPDX-License-Identifier: BSD-2-Clause
 // manages the cache file that lists all of the cogs in linear form
+//
+// line format:
+// ```
+// title: Test
+// date: timestamp
+// filename: /2020/07/01-test.md
+// ---
+// title: Another Test
+// date: timestamp
+// filename: /2020/07/02-another-test.md
+// ---
+// ```
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 
+#include "main.h"
 #include "config.h"
+#include "utils.h"
 
-void cache_list_add(const char *text)
+char *cache_dir()
 {
-	FILE *file = fopen(CACHE_LIST_PATH, "a");
+	static char path[70];
+	strncpy(path, config_cog_dir_get(), 69);
+	strncat(path, CACHE_LIST_PATH, 69);
+
+	return path;
+}
+
+void cache_list_add(const struct cog cog)
+{
+	FILE *file = fopen(cache_dir(), "a");
+
+	fprintf(file, "title: %s\ndate: %s\nfilename: %s\n---\n",
+		cog.metadata.title, utils_timestamp(cog.metadata.date), cog.file);
+
 	fclose(file);
 }
 
-bool cache_list_exists(const char *text)
+int cache_list_find(const char *text)
 {
 	FILE *file = fopen(CACHE_LIST_PATH, "r");
 	char line[100];

@@ -2,14 +2,16 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+#include "utils.h"
+
+typedef struct metadata {
+	char *title;
+	date date;
+} metadata;
+
 struct cog {
-	struct metadata metadata;
+	metadata metadata;
 	char *file;
 };
-
-struct metadata {
-	char *title;
-	struct date date;
-}
 
 #endif

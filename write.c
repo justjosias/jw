@@ -8,10 +8,12 @@
 
 #include "write.h"
 #include "config.h"
+#include "cache.h"
 #include "utils.h"
+#include "main.h"
 
 // Form: `2020/01/`, so it is always 8 characters
-char *get_dir(struct date date)
+static char *get_dir(struct date date)
 {
 	static char str_time[9];
 	snprintf(str_time, 9, "%d/%02d/", date.year, date.mon);
@@ -20,6 +22,7 @@ char *get_dir(struct date date)
 
 int write(char *text, char *title)
 {
+
 	time_t t = time(NULL);
 	struct tm tm = *gmtime(&t);
 	struct date date = utils_full_date(tm);
@@ -65,7 +68,7 @@ int write(char *text, char *title)
 	}
 
 	if (strncmp(title, "", 1) == 0) {
-		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", date.mday, first_text);
+		snprintf(filename, 6 + FIRST_TEXT_LEN + 1, "%02d-%s.md", date.mday, first_text);
 	} else {
 		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", date.mday, title);
 	}
@@ -114,6 +117,21 @@ int write(char *text, char *title)
 	fputs(text, file);
 
 	fclose(file);
+
+	struct metadata cog_metadata = {
+		title,
+		date,
+	};
+
+	char path_from_cog[40]; // path to cog relative to cog dir
+	snprintf(path_from_cog, 40, "/%d/%d/%s", date.year, date.mon, filename);
+
+	struct cog cog = {
+		cog_metadata,
+		path_from_cog,
+	};
+
+	cache_list_add(cog);
 
 	fprintf(stderr, "Saved to %s\n", full_path);
 

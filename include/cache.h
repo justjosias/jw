@@ -2,6 +2,10 @@
 #ifndef CACHE_H_
 #define CACHE_H_
 
+#include <stdbool.h>
+#include "main.h"
+
 bool cache_list_exists(char *);
+void cache_list_add(const struct cog);
 
 #endif

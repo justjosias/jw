@@ -2,15 +2,17 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <time.h>
+
 // human-readable dates
-struct date {
+typedef struct date {
 	int year;
 	int mon;
 	int mday;
 	int hour;
 	int min;
 	int sec;
-};
+} date;
 
 unsigned long utils_djb2_hash(char *);
 char *utils_timestamp(struct date);
