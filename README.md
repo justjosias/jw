@@ -21,6 +21,10 @@ TODO:
 
 As this is a general way to let out thoughts and organize them, I think it would be useful to expand this from micro-journaling to noting general thoughts. Maybe other modes for notes and such. And as it uses Markdown, it can be very flexible.
 
+Principles:
+- Make posting as simple as opening ESerm, writing, and then closing
+- ESerm should do any other work for the user, such as metadata, organization, etc.
+
 ## Word meanings
 
 I chose specific meanings for different words used throughout this program.
