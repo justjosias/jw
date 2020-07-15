@@ -5,7 +5,6 @@
 #include "utils.h"
 
 typedef struct metadata {
-	char *title;
 	date date;
 } metadata;
 

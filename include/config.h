@@ -4,7 +4,6 @@
 
 #define VERSION "0.1.0"
 // the maximum length of the text extracted from the body for a title
-// (if another title is not provided)
 #define FIRST_TEXT_LEN 20
 
 // the cog directory relative to home

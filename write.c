@@ -20,7 +20,7 @@ static char *get_dir(struct date date)
 	return str_time;
 }
 
-int write(char *text, char *title)
+int write(char *text)
 {
 
 	time_t t = time(NULL);
@@ -67,11 +67,7 @@ int write(char *text, char *title)
 		first_text[FIRST_TEXT_LEN - 1] = '\0';
 	}
 
-	if (strncmp(title, "", 1) == 0) {
-		snprintf(filename, 6 + FIRST_TEXT_LEN + 1, "%02d-%s.md", date.mday, first_text);
-	} else {
-		snprintf(filename, 6 + FIRST_TEXT_LEN, "%02d-%s.md", date.mday, title);
-	}
+	snprintf(filename, 6 + FIRST_TEXT_LEN + 1, "%02d-%s.md", date.mday, first_text);
 
 	const size_t full_size = sizeof(full_dir) + sizeof(filename);
 	char full_path[full_size];
@@ -90,11 +86,6 @@ int write(char *text, char *title)
 	// prepare pre-text
 	char metadata[100];
 	strncpy(metadata, "---\n", 99);
-	if (strncmp(title, "", 1) != 0) {
-		strncat(metadata, "title: ", 99);
-		strncat(metadata, title, 99);
-		strncat(metadata, "\n", 99);
-	}
 
 	char *date_str;
 	date_str = utils_timestamp(date);
@@ -119,7 +110,6 @@ int write(char *text, char *title)
 	fclose(file);
 
 	struct metadata cog_metadata = {
-		title,
 		date,
 	};
 

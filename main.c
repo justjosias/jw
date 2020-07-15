@@ -14,7 +14,7 @@ static void print_help()
 	fprintf(stderr, "  version      display version information\n");
 	fprintf(stderr, "  license      display license information\n");
 	fprintf(stderr, "\n");
-	fprintf(stderr, "  post [TITLE] make a post (with optional title)\n");
+	fprintf(stderr, "  post         write a cog\n");
 }
 
 static void print_version_info()
@@ -60,10 +60,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Write here. When you are done, type \"DONE\" and enter.\n");
 		fprintf(stderr, "-----------------------------------------------------\n");
 
-		if (argc == 3)
-			write(get_text(text, len, "DONE"), argv[2]);
-		else
-			write(get_text(text, len, "DONE"), "");
+		write(get_text(text, len, "DONE"));
 
 		free(text);
 

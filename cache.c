@@ -3,11 +3,9 @@
 //
 // line format:
 // ```
-// title: Test
 // date: timestamp
 // filename: /2020/07/01-test.md
 // ---
-// title: Another Test
 // date: timestamp
 // filename: /2020/07/02-another-test.md
 // ---
@@ -33,8 +31,8 @@ void cache_list_add(const struct cog cog)
 {
 	FILE *file = fopen(cache_dir(), "a");
 
-	fprintf(file, "title: %s\ndate: %s\nfilename: %s\n---\n",
-		cog.metadata.title, utils_timestamp(cog.metadata.date), cog.file);
+	fprintf(file, "date: %s\nfilename: %s\n---\n",
+		utils_timestamp(cog.metadata.date), cog.file);
 
 	fclose(file);
 }
