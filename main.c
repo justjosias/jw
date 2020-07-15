@@ -71,8 +71,6 @@ int main(int argc, char **argv)
 		print_help();
 	} else if (strcmp(argv[1], "version") == 0) {
 		print_version_info();
-	} else if (strcmp(argv[1], "license") == 0) {
-		print_license();
 	} else {
 		fprintf(stderr, "Unknown option: %s\n", argv[1]);
 	}

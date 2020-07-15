@@ -2,7 +2,7 @@ NAME=eserm
 PREFIX=~/.local
 INSTALL=install
 
-CFLAGS=-Wall -Wextra -Werror -pedantic
+CFLAGS=-Wall -Wextra -pedantic
 
 CFILES=main.c write.c utils.c config.c cache.c
 OFILES=$(CFILES:.c=.o)
