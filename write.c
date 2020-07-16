@@ -20,6 +20,16 @@ static char *get_dir(struct date date)
 	return str_time;
 }
 
+static size_t count_words(char *string)
+{
+	size_t spaces = 0;
+	for (size_t i = 0; i < strlen(string); ++i) {
+		if (string[i] == ' ')
+			spaces++;
+	}
+	return spaces;
+}
+
 int write(char *text)
 {
 
@@ -123,6 +133,7 @@ int write(char *text)
 
 	cache_list_add(cog);
 
+	fprintf(stderr, "\nWords: %zu. Characters: %lu.\n", count_words(text), strlen(text));
 	fprintf(stderr, "Saved to %s\n", full_path);
 
 	return strlen(text);
