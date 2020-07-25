@@ -1,4 +1,4 @@
-NAME=eserm
+NAME=jw
 PREFIX=~/.local
 INSTALL=install
 

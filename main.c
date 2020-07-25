@@ -8,7 +8,7 @@
 
 static void print_help()
 {
-	fprintf(stderr, "Usage: eserm [OPTIONS] SUBCOMMAND TEXT\n");
+	fprintf(stderr, "Usage: jw [OPTIONS] SUBCOMMAND TEXT\n");
 	fprintf(stderr, "A simple micro-journaling tool\n\n");
 	fprintf(stderr, "  help         display this help text\n");
 	fprintf(stderr, "  version      display version information\n");
@@ -19,7 +19,7 @@ static void print_help()
 
 static void print_version_info()
 {
-	fprintf(stderr, "eserm %s\n", VERSION);
+	fprintf(stderr, "jw %s\n", VERSION);
 	fprintf(stderr, "Copyright (C) Josias Allestad\n");
 	fprintf(stderr, "You may use this software under the terms of the BSD-2-Clause license\n");
 }
@@ -49,7 +49,7 @@ static char *get_text(char *text, size_t len, char *exit)
 int main(int argc, char **argv)
 {
 	if (argc == 1) {
-		fprintf(stderr, "Usage: eserm SUBCOMMAND\n");
+		fprintf(stderr, "Usage: jw SUBCOMMAND\n");
 		return EXIT_FAILURE;
 	}
 

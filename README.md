@@ -1,4 +1,6 @@
-# ESerm
+# jw
+
+Just Write.
 
 A micro-journaling tool written in C.
 
@@ -22,25 +24,15 @@ TODO:
 As this is a general way to let out thoughts and organize them, I think it would be useful to expand this from micro-journaling to noting general thoughts. Maybe other modes for notes and such. And as it uses Markdown, it can be very flexible.
 
 Principles:
-- Make posting as simple as opening ESerm, writing, and then closing
-- ESerm should do any other work for the user, such as metadata, organization, etc.
-
-## Word meanings
-
-I chose specific meanings for different words used throughout this program.
-
-First of all, the name. ESerm is short for Ego Sermo, which is a combination of the Latin words for "self" and "conversation."
-
-Next, we don't have tweets, toots, or even posts. Here thoughts you save are called "cogs", which is short for "cogitatio", "cogitamentum", or "cogitatus" (take your pick). It can also refer to "cogs" turning in your mind.
-
-Everything else is in plain old English.
+- Make posting as simple as opening jw, writing, and then closing
+- jw should do any other work for the user, such as metadata, organization, etc.
 
 ## Installation
 
 ```
-$ git clone https://codeberg.org/josias/ESerm && cd ESerm
+$ git clone https://codeberg.org/josias/jw && cd jw
 $ make
-$ ./eserm help
+$ ./jw help
 ```
 
 ## License
