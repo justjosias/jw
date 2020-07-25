@@ -14,7 +14,7 @@ static void print_help()
 	fprintf(stderr, "  version      display version information\n");
 	fprintf(stderr, "  license      display license information\n");
 	fprintf(stderr, "\n");
-	fprintf(stderr, "  post         write a cog\n");
+	fprintf(stderr, "  post         write a post\n");
 }
 
 static void print_version_info()

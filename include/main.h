@@ -8,7 +8,7 @@ typedef struct metadata {
 	date date;
 } metadata;
 
-struct cog {
+struct post {
 	metadata metadata;
 	char *file;
 };

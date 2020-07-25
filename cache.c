@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BSD-2-Clause
-// manages the cache file that lists all of the cogs in linear form
+// manages the cache file that lists all of the posts in linear form
 //
 // line format:
 // ```
@@ -21,18 +21,18 @@
 char *cache_dir()
 {
 	static char path[70];
-	strncpy(path, config_cog_dir_get(), 69);
+	strncpy(path, config_post_dir_get(), 69);
 	strncat(path, CACHE_LIST_PATH, 69);
 
 	return path;
 }
 
-void cache_list_add(const struct cog cog)
+void cache_list_add(const struct post post)
 {
 	FILE *file = fopen(cache_dir(), "a");
 
 	fprintf(file, "date: %s\nfilename: %s\n---\n",
-		utils_timestamp(cog.metadata.date), cog.file);
+		utils_timestamp(post.metadata.date), post.file);
 
 	fclose(file);
 }

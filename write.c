@@ -38,7 +38,7 @@ int write(char *text)
 	struct date date = utils_full_date(tm);
 
 	char full_dir[100];
-	snprintf(full_dir, 100, "%s/%s", config_cog_dir_get(), get_dir(date));
+	snprintf(full_dir, 100, "%s/%s", config_post_dir_get(), get_dir(date));
 
 	// form of 01-hello.md, where the text is no greater than FIRST_TEXT_LEN
 	char filename[6 + FIRST_TEXT_LEN + 1];
@@ -85,10 +85,10 @@ int write(char *text)
 	strncat(full_path, filename, full_size);
 
 	// ensure the directories exist
-	utils_ensure_dir(config_cog_dir_get());
+	utils_ensure_dir(config_post_dir_get());
 
 	char year_path[44];
-	snprintf(year_path, 44, "%s/%d", config_cog_dir_get(), date.year);
+	snprintf(year_path, 44, "%s/%d", config_post_dir_get(), date.year);
 	utils_ensure_dir(year_path);
 
 	utils_ensure_dir(full_dir);
@@ -119,19 +119,19 @@ int write(char *text)
 
 	fclose(file);
 
-	struct metadata cog_metadata = {
+	struct metadata post_metadata = {
 		date,
 	};
 
-	char path_from_cog[40]; // path to cog relative to cog dir
-	snprintf(path_from_cog, 40, "/%d/%d/%s", date.year, date.mon, filename);
+	char path_from_post[40]; // path to post relative to post dir
+	snprintf(path_from_post, 40, "/%d/%d/%s", date.year, date.mon, filename);
 
-	struct cog cog = {
-		cog_metadata,
-		path_from_cog,
+	struct post post = {
+		post_metadata,
+		path_from_post,
 	};
 
-	cache_list_add(cog);
+	cache_list_add(post);
 
 	fprintf(stderr, "\nWords: %zu. Characters: %lu.\n", count_words(text), strlen(text));
 	fprintf(stderr, "Saved to %s\n", full_path);

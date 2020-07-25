@@ -6,6 +6,6 @@
 #include "main.h"
 
 bool cache_list_exists(char *);
-void cache_list_add(const struct cog);
+void cache_list_add(const struct post);
 
 #endif
