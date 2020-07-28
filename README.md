@@ -20,6 +20,7 @@ Future features:
 
 TODO:
 - Use system text editor instead of `get_text`
+- Automatically add line breaks (or solve some other way)
 
 As this is a general way to let out thoughts and organize them, I think it would be useful to expand this from micro-journaling to noting general thoughts. Maybe other modes for notes and such. And as it uses Markdown, it can be very flexible.
 
