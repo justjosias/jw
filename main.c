@@ -5,6 +5,7 @@
 
 #include "config.h"
 #include "write.h"
+#include "search.h"
 
 static void print_help()
 {
@@ -68,6 +69,19 @@ int main(int argc, char **argv)
 		print_help();
 	} else if (strcmp(argv[1], "version") == 0) {
 		print_version_info();
+	} else if (strcmp(argv[1], "search") == 0) {
+		if (argc < 3) {
+			fprintf(stderr, "Usage: jw search QUERY\n");
+			return EXIT_FAILURE;
+		}
+
+		size_t count = 0;
+		struct result *results = search(argv[2], &count);
+		if (results && count > 0) {
+			for (size_t i = 0; i < count; ++i) {
+				printf("%s\n", results[i].path);
+			}
+		}
 	} else {
 		fprintf(stderr, "Unknown option: %s\n", argv[1]);
 	}
