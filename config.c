@@ -15,6 +15,5 @@ char *config_post_dir_get()
 	strcat(path, "\0");
 	path[256] = '\0'; // Just in case
 
-	printf("Da path %s\n", path);
 	return path;
 }

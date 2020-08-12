@@ -31,7 +31,6 @@ static char *get_filename(struct date date, char first_text[FIRST_TEXT_LEN + 1])
 	snprintf(filename, FIRST_TEXT_LEN + 17, "%d-%02d-%02d-%s.md",
 			date.year, date.mon, date.mday, first_text);
 
-	printf("Da filename: %s\n", filename);
 	return filename;
 
 }
