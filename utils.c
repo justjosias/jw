@@ -11,7 +11,7 @@ struct date utils_full_date(struct tm tm)
 	struct date date = {
 		tm.tm_year + 1900,
 		tm.tm_mon + 1,
-		tm.tm_mday + 1,
+		tm.tm_mday,
 		tm.tm_hour + 1,
 		tm.tm_min + 1,
 		tm.tm_sec + 1,
