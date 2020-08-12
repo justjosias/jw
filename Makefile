@@ -20,10 +20,6 @@ clean:
 	$(RM) $(OFILES) $(NAME)
 	$(RM) test/test
 
-test: build
-	$(CC) $(LDFLAGS) -I ./include -o test/test $(TESTFILES) $(LIBS)
-	./test/test
-
 install: build
 	$(INSTALL) -d $(PREFIX)/bin
 	$(INSTALL) -m755 $(NAME) $(PREFIX)/bin
