@@ -8,7 +8,9 @@ Many journaling programs are better-designed for writing long entries. Of course
 
 This is different. This is a tool for writing out your thoughts Twitter-style, with a CLI for managing, writing, and editing posts.
 
-Writing out quick thoughts in quick post-format is what this tool is about. I am writing this for myself to be able to keep track of my thoughts in the past, as it can be quite helpful in the future in so many ways. 
+Writing out quick thoughts in quick post-format is what this tool is about. I am writing this for myself to be able to keep track of my thoughts in the past, as it can be quite helpful in the future in so many ways.
+
+To outline the philosophy of the project, I wrote a [blog post](https://josias.dev/justwrite/).
 
 This is currently under development, so there are no promises to its completeless or stability at the moment.
 
@@ -31,7 +33,7 @@ Principles:
 ## Installation
 
 ```
-$ git clone https://codeberg.org/josias/jw && cd jw
+$ git clone https://git.josias.dev/josias/jw && cd jw
 $ make
 $ ./jw help
 ```
