@@ -10,7 +10,7 @@ This is different. This is a tool for writing out your thoughts Twitter-style, w
 
 Writing out quick thoughts in quick post-format is what this tool is about. I am writing this for myself to be able to keep track of my thoughts in the past, as it can be quite helpful in the future in so many ways.
 
-To outline the philosophy of the project, I wrote a [blog post](https://josias.dev/justwrite/).
+To outline the philosophy of the project, I wrote a [blog post](https://josias.dev/posts/justwrite/).
 
 This is currently under development, so there are no promises to its completeless or stability at the moment.
 
