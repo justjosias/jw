@@ -4,7 +4,7 @@ INSTALL=install
 
 CFLAGS=-Wall -Wextra -pedantic
 
-CFILES=main.c write.c utils.c config.c cache.c
+CFILES=main.c write.c utils.c config.c cache.c search.c
 OFILES=$(CFILES:.c=.o)
 TESTFILES=write.o utils.o config.o cache.o test/*.c
 
@@ -14,7 +14,7 @@ build: $(OFILES)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OFILES) $(LIBS)
 
 .c.o:
-	$(CC) -c -I ./include $(CFLAGS) $(OPTIONS) $<
+	$(CC) -c -I ./include -I ./lib $(CFLAGS) $(OPTIONS) $<
 
 clean:
 	$(RM) $(OFILES) $(NAME)

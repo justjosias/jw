@@ -12,14 +12,6 @@
 #include "utils.h"
 #include "main.h"
 
-// Form: `2020/01/`, so it is always 8 characters
-static char *get_dir(struct date date)
-{
-	static char str_time[9];
-	snprintf(str_time, 9, "%d/%02d/", date.year, date.mon);
-	return str_time;
-}
-
 static size_t count_words(char *string)
 {
 	size_t spaces = 0;
@@ -30,6 +22,20 @@ static size_t count_words(char *string)
 	return spaces;
 }
 
+// returns the filename of a post in the form of
+// 2020-01-01-first-text.md
+// relative to $HOME/jw/posts
+static char *get_filename(struct date date, char first_text[FIRST_TEXT_LEN + 1]) {
+	// First text length, plus date, plus extra, plus null
+	static char filename[FIRST_TEXT_LEN + 10 + 4 + 1];
+	snprintf(filename, FIRST_TEXT_LEN + 17, "%d-%02d-%02d-%s.md",
+			date.year, date.mon, date.mday, first_text);
+
+	printf("Da filename: %s\n", filename);
+	return filename;
+
+}
+
 int write(char *text)
 {
 
@@ -37,11 +43,8 @@ int write(char *text)
 	struct tm tm = *gmtime(&t);
 	struct date date = utils_full_date(tm);
 
-	char full_dir[100];
-	snprintf(full_dir, 100, "%s/%s", config_post_dir_get(), get_dir(date));
-
 	// form of 01-hello.md, where the text is no greater than FIRST_TEXT_LEN
-	char filename[6 + FIRST_TEXT_LEN + 1];
+	char filename[FIRST_TEXT_LEN + 17];
 	char tmp_first[FIRST_TEXT_LEN];
 
 	strncpy(tmp_first, text, FIRST_TEXT_LEN);
@@ -77,21 +80,17 @@ int write(char *text)
 		first_text[FIRST_TEXT_LEN - 1] = '\0';
 	}
 
-	snprintf(filename, 6 + FIRST_TEXT_LEN + 1, "%02d-%s.md", date.mday, first_text);
+	strcpy(filename, get_filename(date, first_text));
 
-	const size_t full_size = sizeof(full_dir) + sizeof(filename);
+	char *post_dir = config_post_dir_get();
+
+	const size_t full_size = sizeof(post_dir) + sizeof(filename);
 	char full_path[full_size];
-	strncpy(full_path, full_dir, full_size);
+	strncpy(full_path, post_dir, full_size);
 	strncat(full_path, filename, full_size);
 
 	// ensure the directories exist
-	utils_ensure_dir(config_post_dir_get());
-
-	char year_path[44];
-	snprintf(year_path, 44, "%s/%d", config_post_dir_get(), date.year);
-	utils_ensure_dir(year_path);
-
-	utils_ensure_dir(full_dir);
+	utils_ensure_dir(post_dir);
 
 	// prepare pre-text
 	char metadata[100];
@@ -123,12 +122,9 @@ int write(char *text)
 		date,
 	};
 
-	char path_from_post[40]; // path to post relative to post dir
-	snprintf(path_from_post, 40, "/%d/%d/%s", date.year, date.mon, filename);
-
 	struct post post = {
 		post_metadata,
-		path_from_post,
+		filename,
 	};
 
 	cache_list_add(post);
