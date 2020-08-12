@@ -33,7 +33,7 @@ Principles:
 ## Installation
 
 ```
-$ git clone https://git.josias.dev/josias/jw && cd jw
+$ git clone https://git.josias.dev/jw && cd jw
 $ make
 $ ./jw help
 ```
