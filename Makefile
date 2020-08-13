@@ -6,7 +6,6 @@ CFLAGS=-Wall -Wextra -pedantic
 
 CFILES=main.c write.c utils.c config.c cache.c search.c
 OFILES=$(CFILES:.c=.o)
-TESTFILES=write.o utils.o config.o cache.o test/*.c
 
 all: build
 
