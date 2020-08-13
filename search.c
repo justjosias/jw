@@ -12,7 +12,7 @@
 // is found within it. If so, get basic information about it and
 // add it to the list.
 
-struct result *search(const char query[100], size_t *result_count)
+struct result *search(const char *notebook, const char query[100], size_t *result_count)
 {
 	if (strcmp(query, "") == 0) {
 		return NULL;
@@ -21,7 +21,7 @@ struct result *search(const char query[100], size_t *result_count)
 	static struct result results[1000];
 	size_t result_index = 0;
 
-	char *str_dir = config_post_dir_get();
+	char *str_dir = config_dir_get(notebook);
 	tinydir_dir dir;
 	tinydir_open(&dir, str_dir);
 
@@ -33,7 +33,7 @@ struct result *search(const char query[100], size_t *result_count)
 		if (!file.is_dir)
 		{
 
-			FILE *fp = fopen(strcat(config_post_dir_get(), file.name), "r");
+			FILE *fp = fopen(strcat(str_dir, file.name), "r");
 
 			int c;
 			size_t count = 0;
@@ -52,8 +52,9 @@ struct result *search(const char query[100], size_t *result_count)
 
 			if (strstr(contents, query) != NULL) {
 				struct result r;
-				strcpy(r.path, config_post_dir_get());
-				strcat(r.path, file.name);
+				strncpy(r.path, str_dir, 255);
+				strncat(r.path, file.name, 255);
+				r.path[255] = '\0';
 
 				results[result_index] = r;
 				result_index++;

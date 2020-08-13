@@ -11,6 +11,6 @@
 // cog list relative to cog dir
 #define CACHE_LIST_PATH "/posts.txt"
 
-char *config_post_dir_get(void);
+char *config_dir_get(const char*);
 
 #endif

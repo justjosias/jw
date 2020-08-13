@@ -18,18 +18,19 @@
 #include "config.h"
 #include "utils.h"
 
-char *cache_dir()
+// TODO test repeatedly to see if path works properly as static
+char *cache_dir(const char *notebook)
 {
-	static char path[70];
-	strncpy(path, config_post_dir_get(), 69);
-	strncat(path, CACHE_LIST_PATH, 69);
+	static char path[256];
+	strcat(path, config_dir_get(notebook));
+	strcat(path, CACHE_LIST_PATH);
 
 	return path;
 }
 
-void cache_list_add(const struct post post)
+void cache_list_add(const char *notebook, const struct post post)
 {
-	FILE *file = fopen(cache_dir(), "a");
+	FILE *file = fopen(cache_dir(notebook), "a");
 
 	fprintf(file, "date: %s\nfilename: %s\n---\n",
 		utils_timestamp(post.metadata.date), post.file);
@@ -37,9 +38,9 @@ void cache_list_add(const struct post post)
 	fclose(file);
 }
 
-int cache_list_find(const char *text)
+int cache_list_find(const char *notebook, const char *text)
 {
-	FILE *file = fopen(CACHE_LIST_PATH, "r");
+	FILE *file = fopen(cache_dir(notebook), "r");
 	char line[100];
 
 	while (fgets(line, 100, file)) {

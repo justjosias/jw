@@ -12,7 +12,7 @@
 #include "utils.h"
 #include "main.h"
 
-static size_t count_words(char *string)
+static size_t count_words(const char *string)
 {
 	size_t spaces = 0;
 	for (size_t i = 0; i < strlen(string); ++i) {
@@ -35,7 +35,7 @@ static char *get_filename(struct date date, char first_text[FIRST_TEXT_LEN + 1])
 
 }
 
-int write(char *text)
+int write(const char *notebook, const char *text)
 {
 
 	time_t t = time(NULL);
@@ -81,7 +81,7 @@ int write(char *text)
 
 	strcpy(filename, get_filename(date, first_text));
 
-	char *post_dir = config_post_dir_get();
+	char *post_dir = config_dir_get(notebook);
 
 	const size_t full_size = sizeof(post_dir) + sizeof(filename);
 	char full_path[full_size];
@@ -126,7 +126,7 @@ int write(char *text)
 		filename,
 	};
 
-	cache_list_add(post);
+	cache_list_add(notebook, post);
 
 	fprintf(stderr, "\nWords: %zu. Characters: %lu.\n", count_words(text), strlen(text));
 	fprintf(stderr, "Saved to %s\n", full_path);

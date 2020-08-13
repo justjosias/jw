@@ -4,7 +4,7 @@ INSTALL=install
 
 CFLAGS=-Wall -Wextra -pedantic
 
-CFILES=main.c write.c utils.c config.c cache.c search.c
+CFILES=main.c write.c utils.c config.c cache.c search.c notebooks.c
 OFILES=$(CFILES:.c=.o)
 
 all: build
@@ -17,7 +17,6 @@ build: $(OFILES)
 
 clean:
 	$(RM) $(OFILES) $(NAME)
-	$(RM) test/test
 
 install: build
 	$(INSTALL) -d $(PREFIX)/bin

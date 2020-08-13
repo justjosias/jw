@@ -9,6 +9,6 @@ struct result {
 	//size_t placements[]; // where each occurance is found in the document
 };
 
-struct result *search(const char *query, size_t *count);
+struct result *search(const char *notebook, const char *query, size_t *count);
 
 #endif

@@ -2,6 +2,6 @@
 #ifndef WRITE_H_
 #define WRITE_H_
 
-int write(char *);
+int write(const char *notebook, const char *text);
 
 #endif
