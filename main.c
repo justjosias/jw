@@ -13,12 +13,12 @@ static void print_help()
 {
 	fprintf(stderr, "Usage: jw [OPTIONS] COMMAND\n");
 	fprintf(stderr, "A simple micro-journaling tool\n\n");
-	fprintf(stderr, "  help               display this help text\n");
-	fprintf(stderr, "  version            display version information\n");
+	fprintf(stderr, "  help                     display this help text\n");
+	fprintf(stderr, "  version                  display version information\n");
 	fprintf(stderr, "\n");
-	fprintf(stderr, "  new     NOTEBOOK   make a new notebook\n");
-	fprintf(stderr, "  post    NOTEBOOK   write a post\n");
-	fprintf(stderr, "  search  NOTEBOOK   search for text in a post\n");
+	fprintf(stderr, "  new     NOTEBOOK         make a new notebook\n");
+	fprintf(stderr, "  post    NOTEBOOK         write a post\n");
+	fprintf(stderr, "  search  NOTEBOOK  QUERY  search for text in a post\n");
 }
 
 static void print_version_info()
