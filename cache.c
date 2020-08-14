@@ -23,6 +23,7 @@ char *cache_dir(const char *notebook)
 {
 	static char path[256];
 	strcat(path, config_dir_get(notebook));
+	strcat(path, SEPARATOR);
 	strcat(path, CACHE_LIST_PATH);
 
 	return path;
