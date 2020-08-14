@@ -38,6 +38,10 @@ $ make
 $ ./jw help
 ```
 
+## Similar Software
+
+- [ThotKeeper](https://github.com/cmpilato/thotkeeper)
+
 ## License
 
 Copyright (C) 2020, Josias Allestad
