@@ -24,7 +24,7 @@ static void print_help()
 static void print_version_info()
 {
 	fprintf(stderr, "jw %s\n", VERSION);
-	fprintf(stderr, "Copyright (C) Josias Allestad\n");
+	fprintf(stderr, "Copyright (C) 2020, Josias Allestad\n");
 	fprintf(stderr, "You may use this software under the terms of the BSD-2-Clause license\n");
 }
 
