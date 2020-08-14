@@ -88,9 +88,6 @@ int write(const char *notebook, const char *text)
 	strncpy(full_path, post_dir, full_size);
 	strncat(full_path, filename, full_size);
 
-	// ensure the directories exist
-	utils_ensure_dir(post_dir);
-
 	// prepare pre-text
 	char metadata[100];
 	strncpy(metadata, "---\n", 99);
