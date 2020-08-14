@@ -32,8 +32,16 @@ struct result *search(const char *notebook, const char query[100], size_t *resul
 
 		if (!file.is_dir)
 		{
+			char filepath[256];
+			strncpy(filepath, str_dir, 255);
+			strncat(filepath, file.name, 255);
+			filepath[255] = '\0';
 
-			FILE *fp = fopen(strcat(str_dir, file.name), "r");
+			FILE *fp = fopen(filepath, "r");
+
+			if (fp == NULL) {
+				continue;
+			}
 
 			int c;
 			size_t count = 0;
