@@ -14,15 +14,15 @@ To outline the philosophy of the project, I wrote a [blog post](https://josias.d
 
 This is currently under development, so there are no promises to its completeless or stability at the moment.
 
-Future features:
-
+Features:
+- Distraction-free editor
 - Full text search
-- Categories and hashtags
-- Encryption
+- Notebooks (categories)
 
 TODO:
 - Use system text editor instead of `get_text`
-- Automatically add line breaks (or solve some other way)
+- Automatically add line breaks (or remove one of duplicate line breaks)
+- GTK GUI
 
 As this is a general way to let out thoughts and organize them, I think it would be useful to expand this from micro-journaling to noting general thoughts. Maybe other modes for notes and such. And as it uses Markdown, it can be very flexible.
 
