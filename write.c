@@ -24,15 +24,25 @@ static size_t count_words(const char *string)
 
 // returns the filename of a post in the form of
 // 2020-01-01-first-text.md
-// relative to $HOME/jw/posts
-static char *get_filename(struct date date, char first_text[FIRST_TEXT_LEN + 1]) {
+// relative to $HOME/jw/[notebook]
+static char *get_filename(struct date date,
+			  const char first_text[FIRST_TEXT_LEN + 1])
+{
 	// First text length, plus date, plus extra, plus null
 	static char filename[FIRST_TEXT_LEN + 10 + 4 + 1];
 	snprintf(filename, FIRST_TEXT_LEN + 17, "%d-%02d-%02d-%s.md",
 			date.year, date.mon, date.mday, first_text);
 
 	return filename;
+}
 
+static char *get_full_path(const char *filename, const char *notebook)
+{
+	static char full_path[257];
+	strncpy(full_path, config_dir_get(notebook), 256);
+	strncat(full_path, filename, 256);
+
+	return full_path;
 }
 
 int write(const char *notebook, const char *text)
@@ -81,12 +91,7 @@ int write(const char *notebook, const char *text)
 
 	strcpy(filename, get_filename(date, first_text));
 
-	char *post_dir = config_dir_get(notebook);
-
-	const size_t full_size = sizeof(post_dir) + sizeof(filename);
-	char full_path[full_size];
-	strncpy(full_path, post_dir, full_size);
-	strncat(full_path, filename, full_size);
+	const char *full_path = get_full_path(filename, notebook);
 
 	// prepare pre-text
 	char metadata[100];
