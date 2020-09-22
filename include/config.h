@@ -7,9 +7,9 @@
 #define FIRST_TEXT_LEN 30
 
 // the cog directory relative to home
-#define CONFIG_POST_DIR "/jw"
+#define CONFIG_POST_DIR "jw"
 // cog list relative to cog dir
-#define CACHE_LIST_PATH "/posts.txt"
+#define CACHE_LIST_PATH "posts.txt"
 
 char *config_dir_get(const char*);
 
