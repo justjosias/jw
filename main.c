@@ -11,21 +11,21 @@
 
 static void print_help()
 {
-	fprintf(stderr, "Usage: jw [OPTIONS] COMMAND\n");
-	fprintf(stderr, "A simple micro-journaling tool\n\n");
-	fprintf(stderr, "  help                     display this help text\n");
-	fprintf(stderr, "  version                  display version information\n");
-	fprintf(stderr, "\n");
-	fprintf(stderr, "  new     NOTEBOOK         make a new notebook\n");
-	fprintf(stderr, "  post    NOTEBOOK         write a post\n");
-	fprintf(stderr, "  search  NOTEBOOK  QUERY  search for text in a post\n");
+	fprintf(stdout, "Usage: jw [OPTIONS] COMMAND\n");
+	fprintf(stdout, "A simple micro-journaling tool\n\n");
+	fprintf(stdout, "  help                     display this help text\n");
+	fprintf(stdout, "  version                  display version information\n");
+	fprintf(stdout, "\n");
+	fprintf(stdout, "  new     NOTEBOOK         make a new notebook\n");
+	fprintf(stdout, "  post    NOTEBOOK         write a post\n");
+	fprintf(stdout, "  search  NOTEBOOK  QUERY  search for text in a post\n");
 }
 
 static void print_version_info()
 {
-	fprintf(stderr, "jw %s\n", VERSION);
-	fprintf(stderr, "Copyright (C) 2020, Josias Allestad\n");
-	fprintf(stderr, "You may use this software under the terms of the BSD-2-Clause license\n");
+	fprintf(stdout, "jw %s\n", VERSION);
+	fprintf(stdout, "Copyright (C) 2020, Josias Allestad\n");
+	fprintf(stdout, "You may use this software under the terms of the BSD-2-Clause license\n");
 }
 
 static char *get_text(char *text, size_t len, char *exit)
@@ -48,6 +48,12 @@ static char *get_text(char *text, size_t len, char *exit)
 	}
 
 	return text;
+}
+
+// cleans up text by removing newlines and breaking text at appropriate places.
+// modifies original string and returns the same pointer given
+static char *cleanup_text(char *text) {
+	
 }
 
 int main(int argc, char **argv)
@@ -78,13 +84,13 @@ int main(int argc, char **argv)
 
 	if (strcmp(argv[1], "new") == 0) {
 		notebooks_new(notebook);
-		fprintf(stderr, "Notebook %s created\n", notebook);
+		fprintf(stdout, "Notebook %s created\n", notebook);
 	} else if (strcmp(argv[1], "post") == 0) {
 		char *text = (char *)malloc(1000);
 		int len = 1000;
 
-		fprintf(stderr, "Write here. When you are done, type \"DONE\" and enter.\n");
-		fprintf(stderr, "-----------------------------------------------------\n");
+		fprintf(stdout, "Write here. When you are done, type \"DONE\" and enter.\n");
+		fprintf(stdout, "-----------------------------------------------------\n");
 
 		write(notebook, get_text(text, len, "DONE"));
 
