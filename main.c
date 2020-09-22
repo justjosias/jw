@@ -50,12 +50,6 @@ static char *get_text(char *text, size_t len, char *exit)
 	return text;
 }
 
-// cleans up text by removing newlines and breaking text at appropriate places.
-// modifies original string and returns the same pointer given
-static char *cleanup_text(char *text) {
-	
-}
-
 int main(int argc, char **argv)
 {
 	if (argc == 1) {
