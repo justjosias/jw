@@ -18,5 +18,6 @@ unsigned long utils_djb2_hash(char *);
 char *utils_timestamp(struct date);
 void utils_ensure_dir(char *);
 struct date utils_full_date(struct tm);
+char *utils_default_editor();
 
 #endif

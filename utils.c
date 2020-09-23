@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <stdlib.h> // for getenv
 
 #include "utils.h"
 
@@ -52,3 +53,12 @@ unsigned long utils_djb2_hash(char *str)
 	return hash;
 }
 
+// gets the default text editor based on environment variables, or else vi
+char *utils_default_editor()
+{
+	char *editor;
+	if ((editor = getenv("VISUAL")) != NULL) return	editor;
+	if ((editor = getenv("EDITOR")) != NULL) return	editor;
+
+	return "vi";
+}

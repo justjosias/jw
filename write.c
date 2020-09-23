@@ -130,7 +130,7 @@ int write(const char *notebook, const char *text)
 
 	cache_list_add(notebook, post);
 
-	fprintf(stderr, "\nWords: %zu. Characters: %lu.\n", count_words(text), strlen(text));
+	fprintf(stderr, "Words: %zu. Characters: %lu.\n", count_words(text), strlen(text));
 	fprintf(stderr, "Saved to %s\n", full_path);
 
 	return strlen(text);

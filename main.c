@@ -6,8 +6,9 @@
 
 #include "config.h"
 #include "notebooks.h"
-#include "write.h"
 #include "search.h"
+#include "utils.h"
+#include "write.h"
 
 static void print_help()
 {
@@ -28,24 +29,41 @@ static void print_version_info()
 	fprintf(stdout, "You may use this software under the terms of the BSD-2-Clause license\n");
 }
 
-static char *get_text(char *text, size_t len, char *exit)
+// gets text using the default text editor and a temporary file
+// Returns NULL on memory allocation error
+// NOTE: It would be useful to make sure the temporary file is safe
+// even when the program crashes, so it can be restored
+static char *get_text()
 {
-	size_t available = len;
+	char path[] = "/tmp/jw.XXXXXX";
+	int fd = mkstemp(path);
+	FILE *fp = fdopen(fd, "a+");
 
-	// TODO increase flexibility by possibly reading char by char
-	char line[500];
-	while ((fgets(line, 500, stdin))) {
-		if (strncmp(line, exit, strlen(exit)) == 0) {
-			break;
-		}
+	const char *editor = utils_default_editor();
 
-		if (strlen(line) > available) {
-			text = realloc(text, len + 500);
-		}
+	char command[256];
+	strncpy(command, editor, 255);
+	strncat(command, " ", 255);
+	strncat(command, path, 255);
+	system(command);
 
-		strncat(text, line, len - 1);
-		available -= strlen(line);
+	fseek(fp, 0, SEEK_END);
+	size_t file_size = ftell(fp);
+	char *text = (char *)malloc(file_size);
+	if (text == NULL) {
+		return NULL;
 	}
+	fseek(fp, 0, SEEK_SET);
+
+	int c;
+	size_t pos = 0;
+	while ((c = fgetc(fp)) != EOF) {
+		text[pos] = c;
+		pos++;
+	}
+	text[pos] = '\0';
+
+	remove(path);
 
 	return text;
 }
@@ -80,13 +98,18 @@ int main(int argc, char **argv)
 		notebooks_new(notebook);
 		fprintf(stdout, "Notebook %s created\n", notebook);
 	} else if (strcmp(argv[1], "post") == 0) {
-		char *text = (char *)malloc(1000);
-		int len = 1000;
+		char *text = get_text();
+		if (text == NULL) {
+			fprintf(stderr, "Out of memory!\n");
+			return EXIT_FAILURE;
+		}
 
-		fprintf(stdout, "Write here. When you are done, type \"DONE\" and enter.\n");
-		fprintf(stdout, "-----------------------------------------------------\n");
+		if (text[0] == '\0') {
+			fprintf(stderr, "No text was entered.\n");
+			return EXIT_FAILURE;
+		}
 
-		write(notebook, get_text(text, len, "DONE"));
+		write(notebook, text);
 
 		free(text);
 
