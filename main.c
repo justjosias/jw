@@ -49,7 +49,7 @@ static char *get_text()
 
 	fseek(fp, 0, SEEK_END);
 	size_t file_size = ftell(fp);
-	char *text = (char *)malloc(file_size);
+	char *text = (char *)malloc(file_size + 1);
 	if (text == NULL) {
 		return NULL;
 	}
