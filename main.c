@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 			return EXIT_FAILURE;
 		}
 
-		write(notebook, text);
+		write_post(notebook, text);
 
 		free(text);
 

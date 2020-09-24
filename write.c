@@ -45,9 +45,9 @@ static char *get_full_path(const char *filename, const char *notebook)
 	return full_path;
 }
 
-int write(const char *notebook, const char *text)
+// Writes a post to the directory related to the notebook
+int write_post(const char *notebook, const char *text)
 {
-
 	time_t t = time(NULL);
 	struct tm tm = *gmtime(&t);
 	struct date date = utils_full_date(tm);
