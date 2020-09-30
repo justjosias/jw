@@ -95,7 +95,11 @@ int main(int argc, char **argv)
 	closedir(dir);
 
 	if (strcmp(argv[1], "new") == 0) {
-		notebooks_new(notebook);
+		int err = notebooks_new(notebook);
+		if (err != NULL) {
+			fprintf(stderr, "Failed to make new notebook.\n");
+			return EXIT_FAILURE;
+		}
 		fprintf(stdout, "Notebook %s created\n", notebook);
 	} else if (strcmp(argv[1], "post") == 0) {
 		char *text = get_text();
