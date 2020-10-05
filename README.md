@@ -38,6 +38,7 @@ $ ./jw help
 
 - [ThotKeeper](https://github.com/cmpilato/thotkeeper)
 - [jrnl](https://github.com/jrnl-org/jrnl/)
+- [jrny](https://git.sr.ht/~detondev/jrny)
 
 ## License
 
