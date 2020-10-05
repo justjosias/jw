@@ -25,13 +25,11 @@ struct result *search(const char *notebook, const char query[100], size_t *resul
 	tinydir_dir dir;
 	tinydir_open(&dir, str_dir);
 
-	while (dir.has_next)
-	{
+	while (dir.has_next) {
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
 
-		if (!file.is_dir)
-		{
+		if (!file.is_dir) {
 			char filepath[256];
 			strncpy(filepath, str_dir, 255);
 			strncat(filepath, file.name, 255);
