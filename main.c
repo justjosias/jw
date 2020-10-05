@@ -95,8 +95,8 @@ int main(int argc, char **argv)
 	closedir(dir);
 
 	if (strcmp(argv[1], "new") == 0) {
-		int err = notebooks_new(notebook);
-		if (err != NULL) {
+		int err = notebook_new(notebook);
+		if (err != 0) {
 			fprintf(stderr, "Failed to make new notebook.\n");
 			return EXIT_FAILURE;
 		}
@@ -130,6 +130,13 @@ int main(int argc, char **argv)
 				printf("%s\n", results[i].path);
 			}
 		}
+	} else if (strcmp(argv[1], "stats") == 0) {
+		struct stats stats = notebook_stats(notebook);
+		fprintf(stdout, "Stats for %s\n"
+				"------------------\n"
+				"Posts: %zu\n"
+				"Words: %zu\n",
+				notebook, stats.posts, stats.words);
 	} else {
 		fprintf(stderr, "jw: unknown option: %s\n", argv[1]);
 	}
