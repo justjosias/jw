@@ -37,6 +37,7 @@ $ ./jw help
 ## Similar Software
 
 - [ThotKeeper](https://github.com/cmpilato/thotkeeper)
+- [jrnl](https://github.com/jrnl-org/jrnl/)
 
 ## License
 
