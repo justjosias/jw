@@ -11,6 +11,7 @@
 #include "cache.h"
 #include "utils.h"
 #include "main.h"
+#include "notebook.h"
 
 static size_t count_words(const char *string)
 {
@@ -22,16 +23,79 @@ static size_t count_words(const char *string)
 	return spaces;
 }
 
+// Finds the first occurance of a query and replaces it in the resulting buffer
+// All strings (except the buffer) must be null-terminated
+static char *find_and_replace(const char *haystack, const char *needle,
+		const char *replacement,
+		char *buffer, size_t buf_size)
+{
+	char *ptr = strstr(haystack, needle);
+	if (ptr == NULL)
+		return NULL;
+
+	size_t start = ptr - haystack;
+	size_t len = strlen(replacement);
+
+	if (buf_size < strlen(haystack) + len)
+		return NULL;
+
+	size_t buf_pos = 0;
+	size_t hay_pos = 0;
+	size_t replacement_pos = 0;
+	while (hay_pos < strlen(haystack) + len) {
+		if (hay_pos >= start && replacement_pos < len) {
+			while (replacement_pos < len) {
+				buffer[buf_pos] = replacement[replacement_pos];
+				buf_pos++;
+				replacement_pos++;
+			}
+			hay_pos += strlen(needle);
+			continue;
+		}
+
+		buffer[buf_pos] = haystack[hay_pos];
+		buf_pos++;
+
+		hay_pos++;
+	}
+
+	buffer[buf_pos] = '\0';
+	return buffer;
+}
+
 // returns the filename of a post in the form of
 // 2020-01-01-first-text.md
 // relative to $HOME/jw/[notebook]
-static char *get_filename(struct date date,
+static char *get_filename(const char *template, struct date date,
 			  const char first_text[FIRST_TEXT_LEN + 1])
 {
 	// First text length, plus date, plus extra, plus null
-	static char filename[FIRST_TEXT_LEN + 10 + 4 + 1];
-	snprintf(filename, FIRST_TEXT_LEN + 17, "%d-%02d-%02d-%s.md",
-			date.year, date.mon, date.mday, first_text);
+	static char filename[FIRST_TEXT_LEN + 10 + 10 + 1];
+	strncpy(filename, template, sizeof(filename) - 1);
+
+	for (size_t i = 0; filename[i] != '\0' && i < sizeof(filename); i++) {
+		if (filename[i] == '%')
+			filename[i] = '`';
+			// this should be fine because non-alphanumeric symbols
+			// are removed from first_text, and are unlikely to occur
+			// in the template (TODO: note this in docs)
+	}
+
+	char buf[sizeof(filename)];
+	if (find_and_replace(filename, "`Y", "%02d", buf, sizeof(buf)) != NULL)
+		snprintf(filename, sizeof(filename), buf, date.year);
+	if (find_and_replace(filename, "`m", "%02d", buf, sizeof(buf)) != NULL)
+		snprintf(filename, sizeof(filename), buf, date.mon);
+	if (find_and_replace(filename, "`d", "%02d", buf, sizeof(buf)) != NULL)
+		snprintf(filename, sizeof(filename), buf, date.mday);
+	if (find_and_replace(filename, "`s", "%s", buf, sizeof(buf)) != NULL)
+		snprintf(filename, sizeof(filename), buf, first_text);
+
+	// Switch the remaining characters back
+	for (size_t i = 0; filename[i] != '\0' && i < sizeof(filename); i++) {
+		if (filename[i] == '`')
+			filename[i] = '~';
+	}
 
 	return filename;
 }
@@ -46,7 +110,7 @@ static char *get_full_path(const char *filename, const char *notebook)
 }
 
 // Writes a post to the directory related to the notebook
-int write_post(const char *notebook, const char *text)
+int write_post(struct notebook notebook, const char *text)
 {
 	time_t t = time(NULL);
 	struct tm tm = *gmtime(&t);
@@ -89,22 +153,10 @@ int write_post(const char *notebook, const char *text)
 		first_text[FIRST_TEXT_LEN - 1] = '\0';
 	}
 
-	strcpy(filename, get_filename(date, first_text));
+	strcpy(filename, get_filename(notebook.config.post_path, date, first_text));
 
-	const char *full_path = get_full_path(filename, notebook);
+	const char *full_path = get_full_path(filename, notebook.id);
 
-	// prepare pre-text
-	char metadata[100];
-	strncpy(metadata, "---\n", 99);
-
-	char *date_str;
-	date_str = utils_timestamp(date);
-
-	strncat(metadata, "date: ", 99);
-	strncat(metadata, date_str, 99);
-
-	strncat(metadata, "\n---\n", 99);
-	metadata[99] = '\0'; // I don't know if this is necessary or not TODO
 
 	// write to file
 	FILE *file = fopen(full_path, "a+");
@@ -113,8 +165,19 @@ int write_post(const char *notebook, const char *text)
 		return -1;
 	}
 
-	fputs(metadata, file);
-	fputc('\n', file);
+	if (notebook.config.metadata == true) {
+		char metadata[100];
+		strncpy(metadata, "---\n", 99);
+
+		char *timestamp_str = utils_timestamp(date);
+
+		strncat(metadata, "timestamp: ", 99);
+		strncat(metadata, timestamp_str, 99);
+
+		strncat(metadata, "\n---\n", 99);
+		metadata[99] = '\0'; // I don't know if this is necessary or not TODO
+		fputs(metadata, file);
+	}
 	fputs(text, file);
 
 	fclose(file);
@@ -128,7 +191,7 @@ int write_post(const char *notebook, const char *text)
 		filename,
 	};
 
-	cache_list_add(notebook, post);
+	cache_list_add(notebook.id, post);
 
 	fprintf(stderr, "Words: %zu. Characters: %lu.\n", count_words(text), strlen(text));
 	fprintf(stderr, "Saved to %s\n", full_path);

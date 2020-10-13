@@ -6,13 +6,14 @@
 
 #include "config.h"
 #include "search.h"
+#include "notebook.h"
 
 // Strategy for searching:
 // Open every post and determine whether or not a certain query
 // is found within it. If so, get basic information about it and
 // add it to the list.
 
-struct result *search(const char *notebook, const char query[100], size_t *result_count)
+struct result *search(struct notebook notebook, const char query[100], size_t *result_count)
 {
 	if (strcmp(query, "") == 0) {
 		return NULL;
@@ -21,9 +22,8 @@ struct result *search(const char *notebook, const char query[100], size_t *resul
 	static struct result results[1000];
 	size_t result_index = 0;
 
-	char *str_dir = config_dir_get(notebook);
 	tinydir_dir dir;
-	tinydir_open(&dir, str_dir);
+	tinydir_open(&dir, notebook.path);
 
 	while (dir.has_next) {
 		tinydir_file file;
@@ -31,7 +31,7 @@ struct result *search(const char *notebook, const char query[100], size_t *resul
 
 		if (!file.is_dir) {
 			char filepath[256];
-			strncpy(filepath, str_dir, 255);
+			strncpy(filepath, notebook.path, 255);
 			strncat(filepath, file.name, 255);
 			filepath[255] = '\0';
 
@@ -58,7 +58,7 @@ struct result *search(const char *notebook, const char query[100], size_t *resul
 
 			if (strstr(contents, query) != NULL) {
 				struct result r;
-				strncpy(r.path, str_dir, 255);
+				strncpy(r.path, notebook.path, 255);
 				strncat(r.path, file.name, 255);
 				r.path[255] = '\0';
 

@@ -34,6 +34,24 @@ $ make
 $ ./jw help
 ```
 
+## Notebooks
+
+"Notebooks" are collections of posts stored in the `~/jw` directory. They can vary in purpose and are configured separately.
+
+Most of the time making a new notebook is as simple as `jw new <notebook_name>`.
+
+Each notebook can be configured with a `notebook.yaml` in the corresponding directory.
+
+An example `notebook.yaml`:
+```yaml
+name: journal # Default: the name of the directory
+description: General notes and random thoughts
+file_path: %Y-%m-%d-%s.md # other examples: %Y-%m-%d-%s.md, or even posts.md, where all entries are stored in a single file. %s refers to the first letters of the post
+metadata: false # put some metadata (like the timestamp) at the beginnning of each post
+```
+
+By default notebooks are given a basic configuration when made with `jw new`.
+
 ## Similar Software
 
 - [ThotKeeper](https://github.com/cmpilato/thotkeeper)

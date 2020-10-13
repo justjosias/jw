@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: BSD-2-Clause
 #ifndef UTILS_H_
 #define UTILS_H_
 
@@ -19,5 +18,6 @@ char *utils_timestamp(struct date);
 void utils_ensure_dir(char *);
 struct date utils_full_date(struct tm);
 char *utils_default_editor();
+char *utils_mini_yaml(FILE *, const char *, char [512]);
 
 #endif

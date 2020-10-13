@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: BSD-2-Clause
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <stdbool.h>
 
 #include "config.h"
-#include "notebooks.h"
+#include "notebook.h"
 #include "search.h"
 #include "utils.h"
 #include "write.h"
@@ -20,6 +21,7 @@ static void print_help()
 	fprintf(stdout, "  new     NOTEBOOK         make a new notebook\n");
 	fprintf(stdout, "  post    NOTEBOOK         write a post\n");
 	fprintf(stdout, "  search  NOTEBOOK  QUERY  search for text in a post\n");
+	fprintf(stdout, "  stats   NOTEBOOK         print basic information about a notebook\n");
 }
 
 static void print_version_info()
@@ -86,21 +88,34 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	char *notebook = argv[2];
-	DIR *dir = opendir(config_dir_get(notebook));
-	if (!dir && strcmp(argv[1], "new") != 0) {
-		fprintf(stderr, "jw: notebook %s doesn't exist. Create it with `jw new %s`\n", notebook, notebook);
+	char *notebook_id = argv[2];
+	int err = 0;
+	struct notebook notebook = notebook_load(notebook_id, &err);
+
+	bool exists = true;
+	struct stat st = {0};
+	if (stat(notebook.path, &st) == -1)
+		exists = false;
+
+	if (exists && err != 0) {
+		fprintf(stderr, "Error opening notebook %s. Make sure notebook.yaml is available\n", notebook_id);
 		return EXIT_FAILURE;
 	}
-	closedir(dir);
+
+	if (!exists && strcmp(argv[1], "new") != 0) {
+		fprintf(stderr, "Notebook %s does not exist. Create it with `jw new %s`\n", notebook_id, notebook_id);
+		return EXIT_FAILURE;
+	}
 
 	if (strcmp(argv[1], "new") == 0) {
-		int err = notebook_new(notebook);
+		err = notebook_new(notebook.id);
 		if (err != 0) {
-			fprintf(stderr, "Failed to make new notebook.\n");
+			if (err == -1)
+				fprintf(stderr, "Notebook already exists\n");
+			fprintf(stderr, "Failed to make notebook: %s\n", notebook_id);
 			return EXIT_FAILURE;
 		}
-		fprintf(stdout, "Notebook %s created\n", notebook);
+		fprintf(stdout, "Notebook %s created\n", notebook.id);
 	} else if (strcmp(argv[1], "post") == 0) {
 		char *text = get_text();
 		if (text == NULL) {
@@ -131,12 +146,12 @@ int main(int argc, char **argv)
 			}
 		}
 	} else if (strcmp(argv[1], "stats") == 0) {
-		struct stats stats = notebook_stats(notebook);
+		struct stats stats = notebook_stats(notebook.id);
 		fprintf(stdout, "Stats for %s\n"
 				"------------------\n"
 				"Posts: %zu\n"
 				"Words: %zu\n",
-				notebook, stats.posts, stats.words);
+				notebook.id, stats.posts, stats.words);
 	} else {
 		fprintf(stderr, "jw: unknown option: %s\n", argv[1]);
 	}

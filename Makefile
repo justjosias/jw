@@ -4,7 +4,7 @@ INSTALL=install
 
 CFLAGS=-Wall -Wextra -pedantic
 
-CFILES=main.c write.c utils.c config.c cache.c search.c notebooks.c
+CFILES=main.c write.c utils.c config.c cache.c search.c notebook.c
 OFILES=$(CFILES:.c=.o)
 
 all: build
