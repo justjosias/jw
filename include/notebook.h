@@ -3,13 +3,6 @@
 
 #include <stdbool.h>
 
-struct stats {
-	size_t posts;
-	size_t words;
-	size_t tags;
-	// maybe add start date and end date if it's not too hard
-};
-
 #define NOTEBOOK_CONFIG_SIZE 512
 
 // The configuration parsed from notebook.yaml
@@ -29,6 +22,5 @@ struct notebook {
 
 int notebook_new(const char *);
 struct notebook notebook_load(const char*, int*);
-struct stats notebook_stats(const char *);
 
 #endif

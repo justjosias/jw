@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <stdbool.h>
 
+#include "main.h"
 #include "config.h"
 #include "notebook.h"
 #include "search.h"
@@ -145,13 +146,6 @@ int main(int argc, char **argv)
 				printf("%s\n", results[i].path);
 			}
 		}
-	} else if (strcmp(argv[1], "stats") == 0) {
-		struct stats stats = notebook_stats(notebook.id);
-		fprintf(stdout, "Stats for %s\n"
-				"------------------\n"
-				"Posts: %zu\n"
-				"Words: %zu\n",
-				notebook.id, stats.posts, stats.words);
 	} else {
 		fprintf(stderr, "jw: unknown option: %s\n", argv[1]);
 	}
