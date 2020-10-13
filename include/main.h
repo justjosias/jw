@@ -3,7 +3,6 @@
 
 #include "utils.h" // for date
 
-#define VERSION "0.1.0"
 // the maximum length of the text extracted from the body for a title
 #define FIRST_TEXT_LEN 30
 
