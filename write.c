@@ -181,16 +181,7 @@ int write_post(struct notebook notebook, const char *text)
 
 	fclose(file);
 
-	struct metadata post_metadata = {
-		date,
-	};
-
-	struct post post = {
-		post_metadata,
-		filename,
-	};
-
-	cache_list_add(notebook.id, post);
+	cache_list_add(notebook.id, filename);
 
 	fprintf(stderr, "Words: %zu. Characters: %lu.\n", count_words(text), strlen(text));
 	fprintf(stderr, "Saved to %s\n", full_path);
