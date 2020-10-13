@@ -111,45 +111,46 @@ static char *get_full_path(const char *filename, const char *notebook)
 // Writes a post to the directory related to the notebook
 int write_post(struct notebook notebook, const char *text)
 {
+	size_t text_len = strlen(text);
+
 	time_t t = time(NULL);
 	struct tm tm = *gmtime(&t);
 	struct date date = utils_full_date(tm);
 
 	// form of 01-hello.md, where the text is no greater than FIRST_TEXT_LEN
 	char filename[FIRST_TEXT_LEN + 17];
-	char tmp_first[FIRST_TEXT_LEN];
-
-	strncpy(tmp_first, text, FIRST_TEXT_LEN);
 
 	// modify first_text to remove non-letters and non-characters
 	char first_text[FIRST_TEXT_LEN + 1];
 	size_t i = 0;
 	size_t n = 0; // index of first_text (may or may not increase per loop)
-	while (i < FIRST_TEXT_LEN) {
-		if (!isalpha(tmp_first[i]) && !isdigit(tmp_first[i]) && tmp_first[i] != '\0') {
+	while (i < FIRST_TEXT_LEN && i <= text_len) {
+		if (text[i] == '\n' && i > 5)
+			break;
+		if (!isalpha(text[i]) && !isdigit(text[i]) && text[i] != '\0') {
 			if (i == 0) {
 				i++;
 				continue;
 			}
 
-			if (first_text[n - 1] != '-' && tmp_first[i] != '\n') {
+			if (first_text[n - 1] != '-' && text[i] != '\n') {
 				first_text[n] = '-';
 			} else {
 				i++;
 				continue;
 			}
 		} else {
-			first_text[n] = tmp_first[i];
+			first_text[n] = text[i];
 		}
 
 		n++;
 		i++;
 	}
 
-	if (first_text[strlen(first_text) - 2] == '-') {
-		first_text[strlen(first_text) - 2] = '\0';
+	if (first_text[n - 1] == '-') {
+		first_text[n - 1] = '\0';
 	} else {
-		first_text[FIRST_TEXT_LEN - 1] = '\0';
+		first_text[n] = '\0';
 	}
 
 	strcpy(filename, get_filename(notebook.config.post_path, date, first_text));
@@ -183,7 +184,7 @@ int write_post(struct notebook notebook, const char *text)
 
 	cache_list_add(notebook.id, filename);
 
-	fprintf(stderr, "Words: %zu. Characters: %lu.\n", count_words(text), strlen(text));
+	fprintf(stderr, "Words: %zu. Characters: %lu.\n", count_words(text), text_len);
 	fprintf(stderr, "Saved to %s\n", full_path);
 
 	return strlen(text);
