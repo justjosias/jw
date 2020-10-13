@@ -24,7 +24,6 @@ static void print_help()
 		"  new     NOTEBOOK         make a new notebook\n"
 		"  post    NOTEBOOK         write a post\n"
 		"  search  NOTEBOOK  QUERY  search for text in a post\n"
-		"  stats   NOTEBOOK         print basic information about a notebook\n"
 	);
 }
 
