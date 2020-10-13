@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: BSD-2-Clause
 #include <stdio.h>
 
 #include <ctype.h> // for isalpha and isdigit

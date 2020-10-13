@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: BSD-2-Clause
 #ifndef CONFIG_H_
 #define CONFIG_H_
 

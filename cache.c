@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: BSD-2-Clause
 // manages the cache file that lists all of the posts in linear form
 //
 // line format:

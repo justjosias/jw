@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: BSD-2-Clause
-//
 // Broad management of notebooks
 #include <stdio.h>
 #include <tinydir.h>
