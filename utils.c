@@ -5,6 +5,7 @@
 #include <stdlib.h> // for getenv
 #include <string.h>
 
+#include "main.h"
 #include "utils.h"
 
 struct date utils_full_date(struct tm tm)
@@ -33,12 +34,38 @@ char *utils_timestamp(struct date date)
 }
 
 // make sure a directory exists
-void utils_ensure_dir(char *path)
+int utils_ensure_dir(const char *path)
 {
 	struct stat st = {0};
 	if (stat(path, &st) == -1) {
-		mkdir(path, 0700);
+		return mkdir(path, 0700);
 	}
+	return 0;
+}
+
+// make directories recursively (must be able to modify path but is changed back)
+// It ignores the last item unless it ends with a separator as well.
+// "path/to/something" will make directories for "path" and "to", but not
+// for "something", but "path/to/something/" will.
+// It took way too long to write this function
+int utils_mkdir(char *path)
+{
+	int err = 0;
+	char *s;
+	if ((s = strstr(path, SEPARATOR)) != NULL) {
+		while (s != NULL) {
+			*s = '\0';
+			err -= utils_ensure_dir(path);
+			*s = SEPARATOR[0]; // change it back
+			s = strstr(s + 1, SEPARATOR);
+			if (s == NULL)
+				return 0;
+		}
+	} else {
+		return utils_ensure_dir(path);
+	}
+
+	return 0;
 }
 
 // a simple hashing function. Source: http://www.cse.yorku.ca/~oz/hash.html

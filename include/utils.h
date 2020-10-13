@@ -15,7 +15,8 @@ typedef struct date {
 
 unsigned long utils_djb2_hash(char *);
 char *utils_timestamp(struct date);
-void utils_ensure_dir(char *);
+int utils_ensure_dir(const char *);
+int utils_mkdir(char *);
 struct date utils_full_date(struct tm);
 char *utils_default_editor();
 char *utils_mini_yaml(FILE *, const char *, char [512]);

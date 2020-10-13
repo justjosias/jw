@@ -101,9 +101,9 @@ static char *get_filename(const char *template, struct date date,
 
 static char *get_full_path(const char *filename, const char *notebook)
 {
-	static char full_path[257];
-	strncpy(full_path, config_dir_get(notebook), 256);
-	strncat(full_path, filename, 256);
+	static char full_path[512];
+	strncpy(full_path, config_dir_get(notebook), 511);
+	strncat(full_path, filename, 511);
 
 	return full_path;
 }
@@ -155,8 +155,10 @@ int write_post(struct notebook notebook, const char *text)
 
 	strcpy(filename, get_filename(notebook.config.post_path, date, first_text));
 
-	const char *full_path = get_full_path(filename, notebook.id);
-
+	char *full_path = get_full_path(filename, notebook.id);
+	// makes sure all the subdirs are made.
+	// For example, if the post_path is %Y/%m/%d.md
+	utils_mkdir(full_path);
 
 	// write to file
 	FILE *file = fopen(full_path, "a+");
