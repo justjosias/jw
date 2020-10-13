@@ -14,22 +14,25 @@
 
 static void print_help()
 {
-	fprintf(stdout, "Usage: jw [OPTIONS] COMMAND\n");
-	fprintf(stdout, "A simple micro-journaling tool\n\n");
-	fprintf(stdout, "  help                     display this help text\n");
-	fprintf(stdout, "  version                  display version information\n");
-	fprintf(stdout, "\n");
-	fprintf(stdout, "  new     NOTEBOOK         make a new notebook\n");
-	fprintf(stdout, "  post    NOTEBOOK         write a post\n");
-	fprintf(stdout, "  search  NOTEBOOK  QUERY  search for text in a post\n");
-	fprintf(stdout, "  stats   NOTEBOOK         print basic information about a notebook\n");
+	printf(
+		"Usage: jw [OPTIONS] COMMAND\n"
+		"A simple micro-journaling tool\n\n"
+		"  help                     display this help text\n"
+
+		"  version                  display version information\n"
+		"\n"
+		"  new     NOTEBOOK         make a new notebook\n"
+		"  post    NOTEBOOK         write a post\n"
+		"  search  NOTEBOOK  QUERY  search for text in a post\n"
+		"  stats   NOTEBOOK         print basic information about a notebook\n"
+	);
 }
 
 static void print_version_info()
 {
-	fprintf(stdout, "jw %s\n", VERSION);
-	fprintf(stdout, "Copyright (C) 2020, Josias Allestad\n");
-	fprintf(stdout, "You may use this software under the terms of the BSD-2-Clause license\n");
+	printf("jw %s\n", VERSION);
+	printf("Copyright (C) 2020, Josias Allestad\n"
+		"You may use this software under the terms of the BSD-2-Clause license\n");
 }
 
 // gets text using the default text editor and a temporary file
