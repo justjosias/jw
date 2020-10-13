@@ -13,7 +13,7 @@ build: $(OFILES)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OFILES) $(LIBS)
 
 .c.o:
-	$(CC) -c -I ./include -I ./lib $(CFLAGS) $(OPTIONS) $<
+	$(CC) -c -I ./include $(CFLAGS) $(OPTIONS) $<
 
 clean:
 	$(RM) $(OFILES) $(NAME)
