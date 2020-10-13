@@ -1,6 +1,7 @@
 // Broad management of notebooks
 #include <stdio.h>
-#include <tinydir.h>
+#include <string.h>
+#include <dirent.h>
 
 #include "main.h"
 #include "config.h"
