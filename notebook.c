@@ -9,18 +9,20 @@
 #include "notebook.h"
 
 static char *notebook_config_path(const char *notebook, char config_path[300]) {
-	strncpy(config_path, config_dir_get(notebook), 299);
+	strncpy(config_path, config_root_get(notebook), 299);
 	strncat(config_path, "notebook.yaml", 299);
 	config_path[299] = '\n';
 	return config_path;
 }
 
 int notebook_new(const char *notebook) {
-	DIR *dir = opendir(config_dir_get(notebook));
+	DIR *dir = opendir(config_root_get(notebook));
 	if (dir != NULL)
 		return -1; // already exists
 
-	utils_ensure_dir(config_dir_get(notebook));
+	// uses utils_mkdir so that it will also make the root directory if necessary
+	utils_mkdir(config_root_get(notebook));
+	utils_ensure_dir(config_root_get(notebook));
 	char config_path[300];
 	FILE *fp = fopen(notebook_config_path(notebook, config_path), "w");
 	if (fp == NULL)
@@ -46,7 +48,7 @@ struct notebook notebook_load(const char *notebook_id, int *err) {
 	struct notebook notebook = {
 		.config = config,
 		.id = notebook_id,
-		.path = config_dir_get(notebook_id),
+		.path = config_root_get(notebook_id),
 	};
 
 	char config_path[300];

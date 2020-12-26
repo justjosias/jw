@@ -53,8 +53,8 @@ static char *get_text()
 	system(command);
 
 	fseek(fp, 0, SEEK_END);
-	size_t file_size = ftell(fp);
-	char *text = (char *)malloc(file_size + 1);
+	long int file_size = ftell(fp);
+	char *text = (char *)malloc((size_t)file_size + 1);
 	if (text == NULL) {
 		return NULL;
 	}
@@ -63,7 +63,7 @@ static char *get_text()
 	int c;
 	size_t pos = 0;
 	while ((c = fgetc(fp)) != EOF) {
-		text[pos] = c;
+		text[pos] = (char)c;
 		pos++;
 	}
 	text[pos] = '\0';
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 	if (stat(notebook.path, &st) == -1)
 		exists = false;
 
-	if (exists && err != 0) {
+	if (exists && err != 0 && strcmp(argv[1], "new") != 0) {
 		fprintf(stderr, "Error opening notebook %s. Make sure notebook.yaml is available\n", notebook_id);
 		return EXIT_FAILURE;
 	}
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 	} else if (strcmp(argv[1], "post") == 0) {
 		char *text = get_text();
 		if (text == NULL) {
-			fprintf(stderr, "Out of memory!\n");
+			fprintf(stderr, "Out of memory! Check /tmp/jw.* to recover post.\n");
 			return EXIT_FAILURE;
 		}
 

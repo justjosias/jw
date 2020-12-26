@@ -8,9 +8,9 @@
 #include "main.h"
 #include "utils.h"
 
-struct date utils_full_date(struct tm tm)
+struct utils_date utils_full_date(struct tm tm)
 {
-	struct date date = {
+	struct utils_date date_ = {
 		tm.tm_year + 1900,
 		tm.tm_mon + 1,
 		tm.tm_mday,
@@ -19,10 +19,10 @@ struct date utils_full_date(struct tm tm)
 		tm.tm_sec + 1,
 	};
 
-	return date;
+	return date_;
 }
 
-char *utils_timestamp(struct date date)
+char *utils_timestamp(struct utils_date date)
 {
 	static char date_str[26]; // For example: 2020-05-23T16:01:58+03:00
 	snprintf(date_str, 26, "%d-%02d-%02dT%02d:%02d:%02d+00:00", // TODO support other time zones
@@ -87,7 +87,8 @@ char *utils_default_editor()
 	if ((editor = getenv("VISUAL")) != NULL) return	editor;
 	if ((editor = getenv("EDITOR")) != NULL) return	editor;
 
-	return "vi";
+	static char e[] = "vi";
+	return e;
 }
 
 // Only gets basic yaml information in the form of `key: value`.

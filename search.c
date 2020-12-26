@@ -30,20 +30,20 @@ struct result *search(struct notebook notebook, const char query[100], size_t *r
 		if (strcmp(path, "") == 0)
 			continue;
 
-		char filepath[256];
-		strncpy(filepath, notebook.path, 255);
-		strncat(filepath, path, 255);
-		filepath[255] = '\0';
+		char filepath[512];
+		strncpy(filepath, notebook.path, 256);
+		strncat(filepath, path, 256);
+		filepath[256] = '\0';
 
 		FILE *fp = fopen(filepath, "r");
 
 		if (fp == NULL) {
-			puts("No such thing");
+			fprintf(stderr, "File not found but is listed in posts.txt: %s\n", filepath);
 			continue;
 		}
 
 		int c;
-		size_t count = 0;
+		size_t count = 1;
 		while ((c = getc(fp)) != EOF) {
 			count++;
 		}
@@ -52,16 +52,16 @@ struct result *search(struct notebook notebook, const char query[100], size_t *r
 		size_t i = 0;
 		fseek(fp, 0, SEEK_SET);
 		while ((c = getc(fp)) != EOF && i < count) {
-			contents[i] = c;
+			contents[i] = (char)c;
 			i++;
 		}
 		contents[i] = '\0';
 
 		if (strstr(contents, query) != NULL) {
 			struct result r;
-			strncpy(r.path, notebook.path, 255);
-			strncat(r.path, path, 255);
-			r.path[255] = '\0';
+			strncpy(r.path, notebook.path, 256);
+			strncat(r.path, path, 256);
+			r.path[256] = '\0';
 
 			results[result_index] = r;
 			result_index++;

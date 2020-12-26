@@ -4,7 +4,7 @@
 #include "notebook.h"
 
 struct result {
-	char path[256];
+	char path[512];
 	//char first_text[51];
 	//size_t occurances;
 	//size_t placements[]; // where each occurance is found in the document

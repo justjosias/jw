@@ -6,17 +6,15 @@
 // the maximum length of the text extracted from the body for a title
 #define FIRST_TEXT_LEN 30
 
-// the cog directory relative to home
-#define CONFIG_POST_DIR "jw"
-// cog list relative to cog dir
+// posts list relative to notebook dir
 #define CACHE_LIST_PATH "posts.txt"
 
-typedef struct metadata {
-	date date;
-} metadata;
+struct metadata {
+	struct utils_date date;
+};
 
 struct post {
-	metadata metadata;
+	struct metadata metadata;
 	char *file;
 };
 

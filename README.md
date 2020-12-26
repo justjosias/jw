@@ -13,7 +13,7 @@ Writing out thoughts quickly and distraction-free is what this tool is about. I 
 To outline the philosophy of the project, I wrote a [blog post](https://josias.dev/posts/justwrite/).
 
 Features:
-- Distraction-free editor
+- Uses your favorite editor
 - Full text search
 - Notebooks (categories)
 
@@ -33,6 +33,33 @@ $ git clone https://git.josias.dev/jw && cd jw
 $ make
 $ ./jw help
 ```
+
+## Usage
+
+First, you must make a new notebook. A notebook is a collection of posts and jw is built around this concept.
+
+Here we make a notebook called "journal", but it can be named anything.
+
+```
+$ jw new journal
+```
+
+When you have a notebook, you can write a post with `jw post journal`. That opens up your default editor (or else vi) in which you can write a post. When you are done, save and quit. jw handles the rest.
+
+You can run a full-text search on your posts by running `jw search journal <query>`. It currently returns a list of paths to posts where the query was found.
+
+## Configuration
+
+The program can be configured by modifying `~/jw/config.yaml`.
+
+```yaml
+root: jw
+editor: vi
+```
+
+The above example configuration sets the root directory (where all jw data is stored) to `~/jw`, and sets the default editor (overriding `$EDITOR`) to `vi`.
+
+This is the default configuration if nothing is changed.
 
 ## Notebooks
 

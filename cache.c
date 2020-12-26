@@ -16,8 +16,8 @@
 // TODO test repeatedly to see if path works properly as static
 char *cache_path(const char *notebook)
 {
-	static char path[256];
-	strcat(path, config_dir_get(notebook));
+	static char path[512];
+	strcat(path, config_root_get(notebook));
 	strcat(path, SEPARATOR);
 	strcat(path, CACHE_LIST_PATH);
 

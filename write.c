@@ -32,7 +32,7 @@ static char *find_and_replace(const char *haystack, const char *needle,
 	if (ptr == NULL)
 		return NULL;
 
-	size_t start = ptr - haystack;
+	size_t start = (size_t)ptr - (size_t)haystack;
 	size_t len = strlen(replacement);
 
 	if (buf_size < strlen(haystack) + len)
@@ -65,7 +65,7 @@ static char *find_and_replace(const char *haystack, const char *needle,
 // returns the filename of a post in the form of
 // 2020-01-01-first-text.md
 // relative to $HOME/jw/[notebook]
-static char *get_filename(const char *template, struct date date,
+static char *get_filename(const char *template, struct utils_date date,
 			  const char first_text[FIRST_TEXT_LEN + 1])
 {
 	// First text length, plus date, plus extra, plus null
@@ -80,6 +80,8 @@ static char *get_filename(const char *template, struct date date,
 			// in the template (TODO: note this in docs)
 	}
 
+	// it's usage of a non-compile time format string is fine because
+	// find_and_replace already sees if it exists or not
 	char buf[sizeof(filename)];
 	if (find_and_replace(filename, "`Y", "%02d", buf, sizeof(buf)) != NULL)
 		snprintf(filename, sizeof(filename), buf, date.year);
@@ -102,7 +104,7 @@ static char *get_filename(const char *template, struct date date,
 static char *get_full_path(const char *filename, const char *notebook)
 {
 	static char full_path[512];
-	strncpy(full_path, config_dir_get(notebook), 511);
+	strncpy(full_path, config_root_get(notebook), 511);
 	strncat(full_path, filename, 511);
 
 	return full_path;
@@ -115,7 +117,7 @@ int write_post(struct notebook notebook, const char *text)
 
 	time_t t = time(NULL);
 	struct tm tm = *gmtime(&t);
-	struct date date = utils_full_date(tm);
+	struct utils_date date = utils_full_date(tm);
 
 	// form of 01-hello.md, where the text is no greater than FIRST_TEXT_LEN
 	char filename[FIRST_TEXT_LEN + 17];
@@ -189,5 +191,5 @@ int write_post(struct notebook notebook, const char *text)
 	fprintf(stderr, "Words: %zu. Characters: %lu.\n", count_words(text), text_len);
 	fprintf(stderr, "Saved to %s\n", full_path);
 
-	return strlen(text);
+	return 1;
 }
