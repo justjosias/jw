@@ -50,7 +50,7 @@ You can run a full-text search on your posts by running `jw search journal <quer
 
 ## Configuration
 
-The program can be configured by modifying `~/jw/config.yaml`.
+The program can be configured by modifying `~/.config/jw/config.yaml`.
 
 ```yaml
 root: jw
@@ -63,7 +63,7 @@ This is the default configuration if nothing is changed.
 
 ## Notebooks
 
-"Notebooks" are collections of posts stored in the `~/jw` directory. They can vary in purpose and are configured separately.
+"Notebooks" are collections of posts stored in the `root` directory (as defined in the global configuration). They can vary in purpose and are configured separately.
 
 Most of the time making a new notebook is as simple as `jw new <notebook_name>`.
 
