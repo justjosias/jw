@@ -84,6 +84,7 @@ By default notebooks are given a basic configuration when made with `jw new`.
 - [ThotKeeper](https://github.com/cmpilato/thotkeeper)
 - [jrnl](https://github.com/jrnl-org/jrnl/)
 - [jrny](https://git.sr.ht/~detondev/jrny)
+- [nb](https://github.com/xwmx/nb)
 
 ## License
 
