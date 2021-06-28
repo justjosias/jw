@@ -27,7 +27,8 @@ struct result *search(struct notebook notebook, const char query[100], size_t *r
 		return NULL;
 	while (fgets(path, 512, cache_file)) {
 		path[strlen(path) - 1] = '\0'; // remove \n
-		if (strcmp(path, "") == 0)
+		// skip blank lines and those starting with "#"
+		if (strcmp(path, "") == 0 || strncmp(path, "#", 1) == 0)
 			continue;
 
 		char filepath[512];
