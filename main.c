@@ -148,6 +148,7 @@ int main(int argc, char **argv)
 				printf("%s\n", results[i].path);
 			}
 		}
+		printf("Found %zu results\n", count);
 	} else {
 		fprintf(stderr, "jw: unknown option: %s\n", argv[1]);
 	}
