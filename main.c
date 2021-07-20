@@ -80,14 +80,25 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
+	const char *notebook_commands[] = { "new", "search", "post" };
+	bool is_notebook_command = false;
+	for (size_t i = 0; i < 3; ++i) {
+		if (strcmp(notebook_commands[i], argv[1]) == 0) {
+			is_notebook_command = true;
+		}
+	}
+
 	if (strcmp(argv[1], "help") == 0) {
 		print_help();
 		return EXIT_SUCCESS;
 	} else if (strcmp(argv[1], "version") == 0) {
 		print_version_info();
 		return EXIT_SUCCESS;
-	} else if (argc < 3) {
-		fprintf(stderr, "jw: command %s doesn't exist or needs argument\n", argv[1]);
+	} else if (argc < 3 && is_notebook_command == true) {
+		fprintf(stderr, "Usage: jw %s NOTEBOOK\n", argv[1]);
+		return EXIT_FAILURE;
+	} else {
+		fprintf(stderr, "jw: command \"%s\" not found\n", argv[1]);
 		return EXIT_FAILURE;
 	}
 
