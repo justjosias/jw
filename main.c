@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 	} else if (argc < 3 && is_notebook_command == true) {
 		fprintf(stderr, "Usage: jw %s NOTEBOOK\n", argv[1]);
 		return EXIT_FAILURE;
-	} else {
+	} else if (is_notebook_command == false) {
 		fprintf(stderr, "jw: command \"%s\" not found\n", argv[1]);
 		return EXIT_FAILURE;
 	}
