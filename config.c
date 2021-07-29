@@ -19,7 +19,7 @@ char *config_root_get(const char *subdir)
 	strcat(path, SEPARATOR);
 	struct config config = config_get();
 	strncat(path, config.root, 511);
-	if (strncmp(subdir, SEPARATOR, 1) != 0 && subdir != NULL) {
+	if (subdir != NULL && strncmp(subdir, SEPARATOR, 1) != 0) {
 		strcat(path, SEPARATOR);
 		strncat(path, subdir, 511);
 	}

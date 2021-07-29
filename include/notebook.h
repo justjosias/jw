@@ -22,5 +22,6 @@ struct notebook {
 
 int notebook_new(const char *);
 struct notebook notebook_load(const char*, int*);
+void notebook_list();
 
 #endif

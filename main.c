@@ -73,19 +73,31 @@ static char *get_text()
 	return text;
 }
 
+struct notebook open_notebook(const char *notebook_id, int *err) {
+	*err = 0;
+	struct notebook notebook = notebook_load(notebook_id, err);
+
+	bool exists = true;
+	struct stat st = {0};
+	if (stat(notebook.path, &st) == -1)
+		exists = false;
+
+	if (exists) {
+		fprintf(stderr, "Error opening notebook %s. Make sure notebook.yaml is available\n", notebook_id);
+		*err = -1;
+	} else {
+		fprintf(stderr, "Notebook %s does not exist. Create it with `jw new %s`\n", notebook_id, notebook_id);
+		*err = -1;
+	}
+
+	return notebook;
+}
+
 int main(int argc, char **argv)
 {
 	if (argc == 1) {
 		fprintf(stderr, "Usage: jw COMMAND\n");
 		return EXIT_FAILURE;
-	}
-
-	const char *notebook_commands[] = { "new", "search", "post" };
-	bool is_notebook_command = false;
-	for (size_t i = 0; i < 3; ++i) {
-		if (strcmp(notebook_commands[i], argv[1]) == 0) {
-			is_notebook_command = true;
-		}
 	}
 
 	if (strcmp(argv[1], "help") == 0) {
@@ -94,43 +106,29 @@ int main(int argc, char **argv)
 	} else if (strcmp(argv[1], "version") == 0) {
 		print_version_info();
 		return EXIT_SUCCESS;
-	} else if (argc < 3 && is_notebook_command == true) {
-		fprintf(stderr, "Usage: jw %s NOTEBOOK\n", argv[1]);
-		return EXIT_FAILURE;
-	} else if (is_notebook_command == false) {
-		fprintf(stderr, "jw: command \"%s\" not found\n", argv[1]);
-		return EXIT_FAILURE;
 	}
 
-	char *notebook_id = argv[2];
 	int err = 0;
-	struct notebook notebook = notebook_load(notebook_id, &err);
-
-	bool exists = true;
-	struct stat st = {0};
-	if (stat(notebook.path, &st) == -1)
-		exists = false;
-
-	if (exists && err != 0 && strcmp(argv[1], "new") != 0) {
-		fprintf(stderr, "Error opening notebook %s. Make sure notebook.yaml is available\n", notebook_id);
-		return EXIT_FAILURE;
-	}
-
-	if (!exists && strcmp(argv[1], "new") != 0) {
-		fprintf(stderr, "Notebook %s does not exist. Create it with `jw new %s`\n", notebook_id, notebook_id);
-		return EXIT_FAILURE;
-	}
-
 	if (strcmp(argv[1], "new") == 0) {
-		err = notebook_new(notebook.id);
+		err = notebook_new(argv[2]);
 		if (err != 0) {
 			if (err == -1)
 				fprintf(stderr, "Notebook already exists\n");
-			fprintf(stderr, "Failed to make notebook: %s\n", notebook_id);
+			fprintf(stderr, "Failed to make notebook: %s\n", argv[2]);
 			return EXIT_FAILURE;
 		}
-		fprintf(stdout, "Notebook %s created\n", notebook.id);
+		fprintf(stdout, "Notebook %s created\n", argv[2]);
 	} else if (strcmp(argv[1], "post") == 0) {
+		if (argc < 3) {
+			fprintf(stderr, "Usage: jw post NOTEBOOK\n");
+			return EXIT_FAILURE;
+		}
+
+		struct notebook notebook = open_notebook(argv[2], &err);
+		if (err != 0) {
+			return EXIT_FAILURE;
+		}
+
 		char *text = get_text();
 		if (text == NULL) {
 			fprintf(stderr, "Out of memory! Check /tmp/jw.* to recover post.\n");
@@ -152,6 +150,11 @@ int main(int argc, char **argv)
 			return EXIT_FAILURE;
 		}
 
+		struct notebook notebook = open_notebook(argv[2], &err);
+		if (err != 0) {
+			return EXIT_FAILURE;
+		}
+
 		size_t count = 0;
 		struct result *results = search(notebook, argv[3], &count);
 		if (results && count > 0) {
@@ -160,8 +163,11 @@ int main(int argc, char **argv)
 			}
 		}
 		printf("Found %zu results\n", count);
+	} else if (strcmp(argv[1], "list") == 0) {
+		notebook_list();
 	} else {
-		fprintf(stderr, "jw: unknown option: %s\n", argv[1]);
+		fprintf(stderr, "jw: command \"%s\" not found\n", argv[1]);
+		return EXIT_FAILURE;
 	}
 
 	return EXIT_SUCCESS;

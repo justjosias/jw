@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
+#include <glob.h>
 
 #include "main.h"
 #include "config.h"
@@ -77,4 +78,34 @@ struct notebook notebook_load(const char *notebook_id, int *err) {
 	notebook.config = config;
 
 	return notebook;
+}
+
+// lists all notebooks with proper configuration
+void notebook_list() {
+	char *root = config_root_get(NULL);
+	char p[512];
+	strncpy(p, root, 511);
+	strncat(p, "*", 511);
+	strncat(p, SEPARATOR, 511);
+	strncat(p, "notebook.yaml", 511);
+
+	glob_t glob_result;
+	int err = glob(p, GLOB_TILDE, NULL, &glob_result);
+	if (err != 0) {
+		return;
+	}
+
+	for (size_t i = 0; i < glob_result.gl_pathc; ++i) {
+		size_t ri = 0;
+		size_t pi = 0;
+		while (root[ri] != '\0' && root[ri] == glob_result.gl_pathv[i][pi]) {
+			ri++;
+			pi++;
+		}
+		while (glob_result.gl_pathv[i][pi] != SEPARATOR[0]) {
+			fputc((int)glob_result.gl_pathv[i][pi], stdout);
+			pi++;
+		}
+		fputc('\n', stdout);
+	}
 }
