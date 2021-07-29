@@ -83,10 +83,10 @@ struct notebook open_notebook(const char *notebook_id, int *err) {
 	if (stat(notebook.path, &st) == -1)
 		exists = false;
 
-	if (exists) {
+	if (exists && *err != 0) {
 		fprintf(stderr, "Error opening notebook %s. Make sure notebook.yaml is available\n", notebook_id);
 		*err = -1;
-	} else {
+	} else if (!exists) {
 		fprintf(stderr, "Notebook %s does not exist. Create it with `jw new %s`\n", notebook_id, notebook_id);
 		*err = -1;
 	}
@@ -111,10 +111,15 @@ int main(int argc, char **argv)
 
 	int err = 0;
 	if (strcmp(argv[1], "new") == 0) {
+		if (argc < 3) {
+			fprintf(stderr, "Usage: jw new NOTEBOOK\n");
+			return EXIT_FAILURE;
+		}
 		err = notebook_new(argv[2]);
 		if (err != 0) {
-			if (err == -1)
+			if (err == -1) {
 				fprintf(stderr, "Notebook already exists\n");
+			}
 			fprintf(stderr, "Failed to make notebook: %s\n", argv[2]);
 			return EXIT_FAILURE;
 		}
