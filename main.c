@@ -24,6 +24,7 @@ static void print_help()
 		"  new     NOTEBOOK         make a new notebook\n"
 		"  post    NOTEBOOK         write a post\n"
 		"  search  NOTEBOOK  QUERY  search for text in a post\n"
+		"  list                     list all existing notebooks\n"
 	);
 }
 
