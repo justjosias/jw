@@ -162,7 +162,7 @@ int main(int argc, char **argv)
 		}
 
 		size_t count = 0;
-		struct result *results = search(notebook, argv[3], &count);
+		struct search_result *results = search(notebook, argv[3], &count);
 		if (results && count > 0) {
 			for (size_t i = 0; i < count; ++i) {
 				printf("%s\n", results[i].path);

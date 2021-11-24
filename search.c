@@ -12,13 +12,13 @@
 // is found within it. If so, get basic information about it and
 // add it to the list.
 
-struct result *search(struct notebook notebook, const char query[100], size_t *result_count)
+struct search_result *search(struct notebook notebook, const char query[100], size_t *result_count)
 {
 	if (strcmp(query, "") == 0) {
 		return NULL;
 	}
 
-	static struct result results[1000];
+	static struct search_result results[1000];
 	size_t result_index = 0;
 
 	char path[512];
@@ -59,7 +59,7 @@ struct result *search(struct notebook notebook, const char query[100], size_t *r
 		contents[i] = '\0';
 
 		if (strstr(contents, query) != NULL) {
-			struct result r;
+			struct search_result r;
 			strncpy(r.path, notebook.path, 256);
 			strncat(r.path, path, 256);
 			r.path[256] = '\0';
