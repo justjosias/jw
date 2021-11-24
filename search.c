@@ -68,6 +68,7 @@ struct search_result *search(struct notebook notebook, const char query[100], si
 			result_index++;
 		}
 
+		free(contents);
 		fclose(fp);
 	}
 
