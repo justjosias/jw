@@ -23,6 +23,9 @@ clean:
 install: clean build
 	$(INSTALL) -d $(PREFIX)/bin
 	$(INSTALL) -m755 $(NAME) $(PREFIX)/bin
+	
+	$(INSTALL) -d $(PREFIX)/share/bash-completion/completions/
+	$(INSTALL) -m755 $(NAME).bash-completion $(PREFIX)/share/bash-completion/completions/$(NAME)
 
 uninstall:
 	$(RM) $(PREFIX)/bin/$(NAME)

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+__jw()
+{
+    local cur prev subcommands
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    subcommands="version help new post search list"
+
+    if [[ " ${subcommands[*]} " == *" ${prev} "* ]] ; then
+        COMPREPLY=( $(compgen -W "$(jw list)" -- ${cur}) )
+	return 0
+    elif [[ ${cur} == * ]] ; then
+        COMPREPLY=( $(compgen -W "${subcommands}" -- ${cur}) )
+        return 0
+    fi
+}
+
+complete -F __jw jw
