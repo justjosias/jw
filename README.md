@@ -88,6 +88,6 @@ By default notebooks are given a basic configuration when made with `jw new`.
 
 ## License
 
-Copyright (C) 2020, Josias Allestad
+Copyright (C) 2020, 2021, 2022 Josias Allestad
 
 You may use this software under the terms of the [BSD-2-Clause license](LICENSE).
