@@ -17,7 +17,7 @@
 char *cache_path(const char *notebook)
 {
 	static char path[512];
-	strcat(path, config_root_get(notebook));
+	strcpy(path, config_root_get(notebook));
 	strcat(path, SEPARATOR);
 	strcat(path, CACHE_LIST_PATH);
 
