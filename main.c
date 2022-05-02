@@ -24,6 +24,7 @@ static void print_help()
 		"  new     NOTEBOOK         make a new notebook\n"
 		"  post    NOTEBOOK         write a post\n"
 		"  search  NOTEBOOK  QUERY  search for text in a post\n"
+		"  tags    NOTEBOOK         list all hashtags in a notebook\n"
 		"  list                     list all existing notebooks\n"
 	);
 }
@@ -169,6 +170,23 @@ int main(int argc, char **argv)
 			}
 		}
 		printf("Found %zu results\n", count);
+	} else if (strcmp(argv[1], "tags") == 0) {
+		if (argc < 3) {
+			fprintf(stderr, "Usage: jw tags NOTEBOOK\n");
+			return EXIT_FAILURE;
+		}
+
+		struct notebook notebook = open_notebook(argv[2], &err);
+		if (err != 0) {
+			return EXIT_FAILURE;
+		}
+
+		size_t count = 0;
+		struct search_hashtag *results = search_list_hashtags(notebook, &count);
+
+		for (size_t i = 0; i < count; ++i) {
+			printf("#%s: %d\n", results[i].tag, results[i].occurances);
+		}
 	} else if (strcmp(argv[1], "list") == 0) {
 		notebook_list();
 	} else {

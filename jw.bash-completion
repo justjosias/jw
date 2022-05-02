@@ -6,7 +6,7 @@ __jw()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    subcommands="version help new post search list"
+    subcommands="version help new post search list tags"
 
     if [[ " ${subcommands[*]} " == *" ${prev} "* ]] ; then
         COMPREPLY=( $(compgen -W "$(jw list)" -- ${cur}) )
