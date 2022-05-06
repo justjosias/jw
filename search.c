@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -108,7 +109,7 @@ struct search_hashtag *search_list_hashtags(struct notebook notebook, size_t *re
 		char tag[512];
 		while ((c = getc(fp)) != EOF) {
 			if (in_tag) {
-				if (c == ' ' || c == '\n') {
+				if (c == ' ' || c == '\n' || ispunct(c)) {
 					in_tag = false;
 					tag[tag_i] = '\0';
 
