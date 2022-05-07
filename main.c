@@ -32,7 +32,7 @@ static void print_help()
 static void print_version_info()
 {
 	printf("jw %s\n", VERSION);
-	printf("Copyright (C) 2020, Josias Allestad\n"
+	printf("Copyright (C) 2020, 2021, 2022 Josias Allestad\n"
 		"You may use this software under the terms of the BSD-2-Clause license\n");
 }
 
