@@ -12,14 +12,24 @@
 #include "main.h"
 #include "notebook.h"
 
-static size_t count_words(const char *string)
-{
-	size_t spaces = 0;
-	for (size_t i = 0; i < strlen(string); ++i) {
-		if (string[i] == ' ')
-			spaces++;
+static size_t is_divider(char ch) {
+	if (ch == ' ' || ch == '\n' || ispunct(ch)) {
+		return true;
 	}
-	return spaces;
+	return false;
+}
+
+static size_t count_words(const char *string) {
+	size_t words = 0;
+	size_t len = strlen(string);
+	for (size_t i = 0; i < len; ++i) {
+		if (i > 0) {
+			if (is_divider(string[i]) && !is_divider(string[i-1])) {
+				words += 1;
+			}
+		}
+	}
+	return words;
 }
 
 // Finds the first occurance of a query and replaces it in the resulting buffer
