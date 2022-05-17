@@ -126,7 +126,7 @@ int write_post(struct notebook notebook, const char *text)
 	size_t text_len = strlen(text);
 
 	time_t t = time(NULL);
-	struct tm tm = *gmtime(&t);
+	struct tm tm = *localtime(&t);
 	struct utils_date date = utils_full_date(tm);
 
 	// form of 01-hello.md, where the text is no greater than FIRST_TEXT_LEN
@@ -183,7 +183,7 @@ int write_post(struct notebook notebook, const char *text)
 		char metadata[100];
 		strncpy(metadata, "---\n", 99);
 
-		char *timestamp_str = utils_timestamp(date);
+		char *timestamp_str = utils_timestamp(tm);
 
 		strncat(metadata, "timestamp: ", 99);
 		strncat(metadata, timestamp_str, 99);

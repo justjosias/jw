@@ -14,7 +14,7 @@ struct utils_date {
 };
 
 unsigned long utils_djb2_hash(char *);
-char *utils_timestamp(struct utils_date);
+char *utils_timestamp(struct tm);
 int utils_ensure_dir(const char *);
 int utils_mkdir(char *);
 struct utils_date utils_full_date(struct tm);

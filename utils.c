@@ -22,13 +22,10 @@ struct utils_date utils_full_date(struct tm tm)
 	return date_;
 }
 
-char *utils_timestamp(struct utils_date date)
+char *utils_timestamp(struct tm date)
 {
 	static char date_str[26]; // For example: 2020-05-23T16:01:58+03:00
-	snprintf(date_str, 26, "%d-%02d-%02dT%02d:%02d:%02d+00:00", // TODO support other time zones
-			date.year, date.mon, date.mday,
-			date.hour, date.min, date.sec
-			);
+	strftime(date_str, 26, "%Y-%m-%dT%H:%M:%S%z", &date);
 
 	return date_str;
 }
