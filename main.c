@@ -42,7 +42,7 @@ static void print_version_info()
 // even when the program crashes, so it can be restored
 static char *get_text()
 {
-	char path[] = "/tmp/jw.XXXXXX";
+	static char path[] = "/tmp/jw.XXXXXX";
 	int fd = mkstemp(path);
 	FILE *fp = fdopen(fd, "a+");
 
@@ -58,7 +58,8 @@ static char *get_text()
 	long int file_size = ftell(fp);
 	char *text = (char *)malloc((size_t)file_size + 1);
 	if (text == NULL) {
-		return NULL;
+		// return the path to the working file if allocation fails
+		return path;
 	}
 	fseek(fp, 0, SEEK_SET);
 
@@ -138,7 +139,7 @@ int main(int argc, char **argv)
 
 		char *text = get_text();
 		if (text == NULL) {
-			fprintf(stderr, "Out of memory! Check /tmp/jw.* to recover post.\n");
+			fprintf(stderr, "Out of memory! Check %s to recover post.\n", text);
 			return EXIT_FAILURE;
 		}
 
