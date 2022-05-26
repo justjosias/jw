@@ -72,7 +72,7 @@ unsigned long utils_djb2_hash(char *str)
 
 	int c;
 	while ((c = *str++))
-		hash = ((hash << 5) + hash) + c;
+		hash = ((hash << 5) + hash) + (size_t)c;
 	
 	return hash;
 }
