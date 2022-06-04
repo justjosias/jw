@@ -6,9 +6,9 @@
 
 struct config {
 	// notebooks directory relative to home
-	char root[256];
+	char root[512];
 	// default text editor, otherwise $VISUAL or $EDITOR
-	char editor[256];
+	char editor[512];
 };
 
 struct config config_get(void);
