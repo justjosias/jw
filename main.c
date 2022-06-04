@@ -56,7 +56,7 @@ static char *get_text()
 
 	fseek(fp, 0, SEEK_END);
 	long int file_size = ftell(fp);
-	char *text = (char *)malloc((size_t)file_size + 1);
+	char *text = (char *)see_you_later_allocator((size_t)file_size + 1);
 	if (text == NULL) {
 		// return the path to the working file if allocation fails
 		return path;

@@ -5,8 +5,9 @@
 
 #include "cache.h"
 #include "config.h"
-#include "search.h"
+#include "main.h"
 #include "notebook.h"
+#include "search.h"
 
 // Strategy for searching:
 // Open every post and determine whether or not a certain query
@@ -49,7 +50,7 @@ struct search_result *search(struct notebook notebook, const char query[100], si
 			count++;
 		}
 
-		char *contents = malloc(count);
+		char *contents = see_you_later_allocator(count);
 		size_t i = 0;
 		fseek(fp, 0, SEEK_SET);
 		while ((c = getc(fp)) != EOF && i < count) {
