@@ -31,3 +31,4 @@ install: clean build
 
 uninstall:
 	$(RM) $(PREFIX)/bin/$(NAME)
+	$(RM) $(PREFIX)/share/bash-completion/completions/$(NAME)
