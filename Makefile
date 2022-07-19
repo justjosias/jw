@@ -2,7 +2,9 @@ NAME=jw
 PREFIX=~/.local
 INSTALL=install
 
-CFLAGS=-Werror -Wall -Wextra -Wshadow -Wcast-align -Wunused -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wdouble-promotion -Wundef -Wpointer-arith -Wunreachable-code -Wwrite-strings -Winit-self -Wstrict-overflow -Wmaybe-uninitialized
+CFLAGS=-g -Werror -Wall -Wextra -Wshadow -Wcast-align -Wunused -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wdouble-promotion -Wundef -Wpointer-arith -Wunreachable-code -Wwrite-strings -Winit-self -Wstrict-overflow -Wmaybe-uninitialized
+
+LDFLAGS=-lbsd
 
 CFILES=main.c write.c utils.c config.c cache.c search.c notebook.c
 OFILES=$(CFILES:.c=.o)

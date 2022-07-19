@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <bsd/stdlib.h>
 #include <dirent.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <stdbool.h>
 
 #include "main.h"
+#include "cache.h"
 #include "config.h"
 #include "notebook.h"
 #include "search.h"
@@ -190,6 +192,41 @@ int main(int argc, char **argv)
 		}
 	} else if (strcmp(argv[1], "list") == 0) {
 		notebook_list();
+	} else if (strcmp(argv[1], "edit") == 0) {
+		if (argc < 3) {
+			fprintf(stderr, "Usage: jw edit NOTEBOOK [NUMBER]\n");
+			return EXIT_FAILURE;
+		}
+		long long last = 1;
+		if (argc == 4) {
+			if (strcmp(argv[3], "last") == 0) {
+				last = -1;
+			} else {
+				const char *errstr;
+				last = strtonum(argv[3], 1, 64, &errstr);
+				if (errstr != NULL) {
+					fprintf(stderr, "Failure to convert last argument to number\nUsage: jw last NOTEBOOK [NUMBER]\n");
+					return EXIT_FAILURE;
+				}
+			}
+		}
+
+		struct notebook notebook = open_notebook(argv[2], &err);
+		if (err != 0) {
+			return EXIT_FAILURE;
+		}
+
+		const char *path = cache_list_last(notebook.id, last);
+		if (path == NULL) {
+			fprintf(stderr, "Failure to retrieve post\n");
+			return EXIT_FAILURE;
+		}
+		const char *editor = utils_default_editor();
+		char command[512];
+		strncpy(command, editor, 511);
+		strncat(command, " ", 511);
+		strncat(command, path, 511);
+		system(command);
 	} else {
 		fprintf(stderr, "jw: command \"%s\" not found\n", argv[1]);
 		return EXIT_FAILURE;

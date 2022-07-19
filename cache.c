@@ -45,3 +45,32 @@ void cache_list_add(const char *notebook, const char *post_path)
 	fputc('\n', fp);
 	fclose(fp);
 }
+
+char *cache_list_last(const char *notebook, long long last)
+{
+	FILE *fp = fopen(cache_path(notebook), "r+");
+	if (fp == NULL)
+		return NULL;
+
+	char line[1024];
+
+	if (last < 1) {
+		char last_line[1024];
+		do {
+			strcpy(last_line, line);
+		} while (fgets(line, 1023, fp));
+	} else {
+		for (size_t i = 0; i < (size_t)last; ++i) {
+			if (fgets(line, 1023, fp) == NULL) {
+				fclose(fp);
+				return NULL;
+			}
+		}
+	}
+	fclose(fp);
+	static char path[1024];
+	strcpy(path, config_root_get(notebook));
+	strcat(path, SEPARATOR);
+	strcat(path, line);
+	return path;
+}

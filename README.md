@@ -34,6 +34,8 @@ $ make
 $ ./jw help
 ```
 
+Depends on `libbsd`.
+
 ## Usage
 
 First, you must make a new notebook. A notebook is a collection of posts and jw is built around this concept.
