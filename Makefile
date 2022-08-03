@@ -2,7 +2,8 @@ NAME=jw
 PREFIX=~/.local
 INSTALL=install
 
-CFLAGS=-g -Werror -Wall -Wextra -Wshadow -Wcast-align -Wunused -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wdouble-promotion -Wundef -Wpointer-arith -Wunreachable-code -Wwrite-strings -Winit-self -Wstrict-overflow -Wmaybe-uninitialized
+DFLAGS=-g
+CFLAGS=-Werror -Wall -Wextra -Wshadow -Wcast-align -Wunused -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wdouble-promotion -Wundef -Wpointer-arith -Wunreachable-code -Wwrite-strings -Winit-self -Wstrict-overflow -Wmaybe-uninitialized
 
 LDFLAGS=-lbsd
 
@@ -16,7 +17,7 @@ all: build
 build: $(OFILES)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OFILES) $(LIBS)
 .c.o:
-	$(CC) -c -I ./include $(CFLAGS) $(OPTIONS) $< -DVERSION=\"$(VERSION)\"
+	$(CC) -c -I ./include $(DFLAGS) $(CFLAGS) $(OPTIONS) $< -DVERSION=\"$(VERSION)\"
 
 
 clean:
