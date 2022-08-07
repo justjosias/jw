@@ -70,7 +70,6 @@ char *cache_list_last(const char *notebook, long long last)
 	fclose(fp);
 	static char path[1024];
 	strcpy(path, config_root_get(notebook));
-	strcat(path, SEPARATOR);
 	strcat(path, line);
 	return path;
 }
