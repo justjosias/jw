@@ -1,5 +1,7 @@
 # jw
 
+## Superseded by [Just Write](https://codeberg.org/josias/just-write)
+
 Just Write.
 
 A micro-journaling tool written in C.
